@@ -10,7 +10,7 @@ LF EQU 10
 
 ; mensajes de inicio
        mensaje1 DB cr,lf,'Programa que calcula el área y perímetro de un trapecio o un cuadrado.$'
-       mensaje2 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,4 para el rombo o presiona 0 para salir.$'
+       mensaje2 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,4 para el rombo, 5 para el pentagono o presiona 0 para salir.$'
  
        
 ; mensajes para el trapecio
@@ -34,7 +34,12 @@ LF EQU 10
        mensaje14 DB cr,lf, 'Ingresa la diagonal menor del rombo$'
        mensaje15 DB cr,lf, 'Ingresa la diagonal mayor del rombo$'
        mensaje16 DB cr,lf, 'Ingresa el lado del rombo$'
-       mensaje17 DB cr,lf, 'El area del rombo es: $' 
+       mensaje17 DB cr,lf, 'El area del rombo es: $'
+       
+; mensajes para el pentagono
+       mensaje18 DB cr,lf, 'Ingresa el lado del pentagono$'
+       mensaje19 DB cr,lf, 'Ingresa el apotema del pentagono$'
+       mensaje20 DB cr,lf, 'El area del pentagono es: $' 
        
        
 ; mensaje para el perimetro
@@ -47,6 +52,7 @@ LF EQU 10
        f2 DW ?
        f3 DW ?
        f4 DW ?
+       f5 DW ?
 
        resultado DB cr,lf,'El resultado es: $'
        espa DB ' ',cr,lf,'$'
@@ -94,7 +100,9 @@ inicio:
     CMP AL, 03H
     JE rectangulo
     CMP AL, 04H
-    JE rombo
+    JE rombo 
+    CMP AL, 05H
+    JE pentagono
     JMP inicio
 
 trapecio:
@@ -123,7 +131,7 @@ trapecio:
     CALL SCAN_NUM
     MOV f3, CX
 
-    ; Calcular el área del trapecio: ((base menor + base mayor) / 2) * altura
+; Calcular el área del trapecio: ((base menor + base mayor) / 2) * altura
     MOV AX, f1      ; base menor
     ADD AX, f2      ; base menor + base mayor
     MOV BX, c       ; 2
@@ -140,7 +148,7 @@ trapecio:
     CALL SCAN_NUM
     MOV f4, CX      ; lado no paralelo del trapecio isósceles
 
-    ; Calcular el perímetro del trapecio: base menor + base mayor + 2 * lado no paralelo
+; Calcular el perímetro del trapecio: base menor + base mayor + 2 * lado no paralelo
     MOV AX, f1      ; base menor
     ADD AX, f2      ; base menor + base mayor
     MOV BX, f4      ; lado no paralelo
@@ -149,7 +157,7 @@ trapecio:
 
     MOV DI, AX      ; Guardar el perímetro en DI
 
-    ; Mostrar el área y el perímetro del trapecio en una sola línea
+; Mostrar el área y el perímetro del trapecio en una sola línea
     MOV AH, 09H
     LEA DX, mensaje8
     INT 21H
@@ -184,20 +192,20 @@ cuadrado:
     CALL SCAN_NUM
     MOV f1, CX      ; Lado del cuadrado
 
-    ; Calcular el área del cuadrado: lado * lado
+; Calcular el área del cuadrado: lado * lado
     MOV AX, f1      ; lado
     MUL AX          ; lado * lado
 
     MOV SI, AX      ; Guardar el área en SI
 
-    ; Calcular el perímetro del cuadrado: 4 * lado
+; Calcular el perímetro del cuadrado: 4 * lado
     MOV AX, f1      ; lado
     MOV BX, 4       ; 4
     MUL BX          ; 4 * lado
 
     MOV DI, AX      ; Guardar el perímetro en DI
 
-    ; Mostrar el área y el perímetro del cuadrado en una sola línea
+; Mostrar el área y el perímetro del cuadrado en una sola línea
     MOV AH, 09H
     LEA DX, mensaje10
     INT 21H
@@ -218,7 +226,8 @@ cuadrado:
 
     MOV AH, 01h
     INT 21H
-    JMP inicio   
+    JMP inicio 
+      
     
 rectangulo:
     MOV AH, 00H
@@ -239,14 +248,14 @@ rectangulo:
     CALL SCAN_NUM
     MOV f2, CX ; Guardar el largo en f2
 
-    ; Calcular el Área del rectángulo: largo * ancho
+; Calcular el Área del rectángulo: largo * ancho
     MOV AX, f1      ; ancho
     MOV BX, f2      ; largo
     MUL BX          ; ancho * largo
 
     MOV SI, AX      ; Guardar el Area en SI
 
-    ; Calcular el perímetro del rectángulo: 2 * (largo + ancho)
+; Calcular el perímetro del rectángulo: 2 * (largo + ancho)
     MOV AX, f1      ; ancho
     ADD AX, f2      ; ancho + largo
     MOV BX, 2       ; multiplicador para el perímetro
@@ -254,7 +263,7 @@ rectangulo:
 
     MOV DI, AX      ; Guardar el perímetro en DI
 
-    ; Mostrar el área y el perímetro del rectángulo en una sola línea
+; Mostrar el área y el perímetro del rectángulo en una sola línea
     MOV AH, 09H
     LEA DX, mensaje13 ; Mostrar mensaje del área del rectángulo
     INT 21H
@@ -276,6 +285,7 @@ rectangulo:
     MOV AH, 01h
     INT 21H
     JMP inicio 
+    
     
 rombo:
     MOV AH, 00H
@@ -304,7 +314,7 @@ rombo:
     CALL SCAN_NUM
     MOV f3, CX
 
-    ; Calcular el área del rombo: ((base menor * base mayor) / 2)
+; Calcular el área del rombo: ((base menor * base mayor) / 2)
     MOV AX, f1      ; diagonal menor
     MOV BX, f2      ; diagonal mayor
     MUL BX          ; diagonal menor * diagonal mayor
@@ -314,15 +324,76 @@ rombo:
     MOV SI, AX      ; Guardar el área en SI
 
 
-    ; Calcular el perímetro del rombo: lado * 4
+; Calcular el perímetro del rombo: lado * 4
     MOV AX, f3      ; lado
     MOV BX, 4      ; 4
     MUL BX
     MOV DI, AX      ; Guardar el perímetro en DI
 
-    ; Mostrar el área y el perímetro del rombo en una sola línea
+; Mostrar el área y el perímetro del rombo en una sola línea
     MOV AH, 09H
     LEA DX, mensaje17
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, mensajep
+    MOV AH, 09H
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01h
+    INT 21H
+    JMP inicio
+
+    
+pentagono:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensaje18
+    INT 21H
+
+    CALL SCAN_NUM
+    MOV f1, CX 
+
+    MOV AH, 09H
+    LEA DX, mensaje19
+    INT 21H 
+
+    CALL SCAN_NUM
+    MOV f2, CX
+    
+    
+; Calcular el perímetro del pentagono: lado * 5
+    MOV AX, f1      ; lado
+    MOV BX, 5       ; 5
+    MUL BX
+    MOV DI, AX      ; Guardar el perímetro en DI 
+     
+
+; Calcular el área del pentagono: ((perimetro * apotema) / 2)
+    MOV BX,AX
+    MOV AX, f2
+    MUL BX
+    MOV BX, 2
+    DIV BX
+    MOV SI, AX      ; Guardar el área en SI
+
+
+
+; Mostrar el área y el perímetro del rombo en una sola línea
+    MOV AH, 09H
+    LEA DX, mensaje20
     INT 21H
     MOV AX, SI
     CALL PRINT_NUM_UNS
