@@ -10,7 +10,7 @@ LF EQU 10
 
 ; mensajes de inicio
        mensaje1 DB cr,lf,'Programa que calcula el área y perímetro de un trapecio o un cuadrado.$'
-       mensaje2 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,4 para el rombo, 5 para el pentagono o presiona 0 para salir.$'
+       mensaje2 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,4 para el rombo, 5 para el pentagono, 6 para el hexagono o presiona 0 para salir.$'
  
        
 ; mensajes para el trapecio
@@ -39,7 +39,12 @@ LF EQU 10
 ; mensajes para el pentagono
        mensaje18 DB cr,lf, 'Ingresa el lado del pentagono$'
        mensaje19 DB cr,lf, 'Ingresa el apotema del pentagono$'
-       mensaje20 DB cr,lf, 'El area del pentagono es: $' 
+       mensaje20 DB cr,lf, 'El area del pentagono es: $'   
+       
+; mensajes para el hexagono
+       mensaje21 DB cr,lf, 'Ingresa el lado del hexagono$'
+       mensaje22 DB cr,lf, 'Ingresa el apotema del hexagono$'
+       mensaje23 DB cr,lf, 'El area del hexagono es: $' 
        
        
 ; mensaje para el perimetro
@@ -52,7 +57,8 @@ LF EQU 10
        f2 DW ?
        f3 DW ?
        f4 DW ?
-       f5 DW ?
+       f5 DW ? 
+       f6 DW ?
 
        resultado DB cr,lf,'El resultado es: $'
        espa DB ' ',cr,lf,'$'
@@ -102,7 +108,9 @@ inicio:
     CMP AL, 04H
     JE rombo 
     CMP AL, 05H
-    JE pentagono
+    JE pentagono 
+    CMP AL, 06H
+    JE hexagono
     JMP inicio
 
 trapecio:
@@ -394,6 +402,66 @@ pentagono:
 ; Mostrar el área y el perímetro del rombo en una sola línea
     MOV AH, 09H
     LEA DX, mensaje20
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, mensajep
+    MOV AH, 09H
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01h
+    INT 21H
+    JMP inicio       
+    
+hexagono:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensaje21
+    INT 21H
+
+    CALL SCAN_NUM
+    MOV f1, CX 
+
+    MOV AH, 09H
+    LEA DX, mensaje22
+    INT 21H 
+
+    CALL SCAN_NUM
+    MOV f2, CX
+    
+    
+; Calcular el perímetro del hexagono: lado * 6
+    MOV AX, f1      ; lado
+    MOV BX, 6       ; 6
+    MUL BX
+    MOV DI, AX      ; Guardar el perímetro en DI 
+     
+
+; Calcular el área del hexagono: ((perimetro * apotema) / 2)
+    MOV BX,AX
+    MOV AX, f2
+    MUL BX
+    MOV BX, 2
+    DIV BX
+    MOV SI, AX      ; Guardar el área en SI
+
+
+
+; Mostrar el área y el perímetro del hexagono en una sola línea
+    MOV AH, 09H
+    LEA DX, mensaje23
     INT 21H
     MOV AX, SI
     CALL PRINT_NUM_UNS
