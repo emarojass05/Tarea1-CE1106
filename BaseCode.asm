@@ -10,7 +10,7 @@ LF EQU 10
 
 ; mensajes de inicio
        mensaje1 DB cr,lf,'Programa que calcula el área y perímetro de un trapecio o un cuadrado.$'
-       mensaje2 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,4 para el rombo, 5 para el pentagono, 6 para el hexagono o presiona 0 para salir.$'
+       mensaje2 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,4 para el rombo, 5 para el pentagono, 6 para el hexagono, 7 para el paralelogramo o presiona 0 para salir.$'
  
        
 ; mensajes para el trapecio
@@ -44,7 +44,13 @@ LF EQU 10
 ; mensajes para el hexagono
        mensaje21 DB cr,lf, 'Ingresa el lado del hexagono$'
        mensaje22 DB cr,lf, 'Ingresa el apotema del hexagono$'
-       mensaje23 DB cr,lf, 'El area del hexagono es: $' 
+       mensaje23 DB cr,lf, 'El area del hexagono es: $'
+
+; mensajes para el paralelogramo
+       mensaje24 DB cr,lf, 'Ingresa la base del paralelogramo: $'
+       mensaje25 DB cr,lf, 'Ingresa el lado oblicuo del paralelogramo: $'
+       mensaje26 DB cr,lf, 'Ingresa la altura del paralelogramo: $'
+       mensaje27 DB cr,lf, 'El area del paralelogramo es: $' 
        
        
 ; mensaje para el perimetro
@@ -59,6 +65,7 @@ LF EQU 10
        f4 DW ?
        f5 DW ? 
        f6 DW ?
+       f7 DW ?
 
        resultado DB cr,lf,'El resultado es: $'
        espa DB ' ',cr,lf,'$'
@@ -111,6 +118,8 @@ inicio:
     JE pentagono 
     CMP AL, 06H
     JE hexagono
+    CMP AL, 07
+    JE paralelogramo
     JMP inicio
 
 trapecio:
@@ -455,6 +464,72 @@ hexagono:
     MUL BX
     MOV BX, 2
     DIV BX
+    MOV SI, AX      ; Guardar el área en SI
+
+
+
+; Mostrar el área y el perímetro del hexagono en una sola línea
+    MOV AH, 09H
+    LEA DX, mensaje23
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, mensajep
+    MOV AH, 09H
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01h
+    INT 21H
+    JMP inicio       
+    
+paralelogramo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensaje24
+    INT 21H
+
+    CALL SCAN_NUM
+    MOV f1, CX 
+
+    MOV AH, 09H
+    LEA DX, mensaje25
+    INT 21H 
+
+    CALL SCAN_NUM
+    MOV f2, CX 
+    
+    MOV AH, 09H
+    LEA DX, mensaje26
+    INT 21H 
+
+    CALL SCAN_NUM
+    MOV f3, CX
+    
+    
+; Calcular el perímetro del paralelogramo: base * 2 + lado * 2
+    MOV AX, f1      ; base
+    ADD AX, f2      ; base + lado
+    MOV BX, 2       ; multiplicador para el perímetro
+    MUL BX
+    MOV DI, AX      ; Guardar el perímetro en DI 
+     
+
+; Calcular el área del hexagono: base * altura
+    MOV AX, f1
+    MOV BX, f3
+    MUL BX
     MOV SI, AX      ; Guardar el área en SI
 
 
