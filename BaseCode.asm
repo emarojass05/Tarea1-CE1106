@@ -7,22 +7,40 @@ LF EQU 10
 .MODEL SMALL
 .STACK 200 ; Se define la pila
 .DATA ; Se definen datos
+
+; mensajes de inicio
        mensaje1 DB cr,lf,'Programa que calcula el área y perímetro de un trapecio o un cuadrado.$'
-       mensaje2 DB cr,lf,'Ingresa la base menor del trapecio: (presiona enter)$'
+       mensaje2 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,4 para el rombo o presiona 0 para salir.$'
+ 
+       
+; mensajes para el trapecio
        mensaje3 DB cr,lf,'Ingresa la base mayor del trapecio: (presiona enter)$'
-       mensaje4 DB cr,lf,'Presiona cualquier tecla para continuar.$'
-       mensaje5 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,o presiona 0 para salir.$'
+       mensaje4 DB cr,lf,'Presiona cualquier tecla para continuar.$'  
+       mensaje5 DB cr,lf,'Ingresa la base menor del trapecio: (presiona enter)$'
        mensaje6 DB cr,lf,'Ingresa la altura del trapecio: (presiona enter)$'
-       mensaje7 DB cr,lf,'Ingresa el lado del cuadrado: (presiona enter)$'
-       mensaje8 DB cr,lf,'El Area del cuadrado es: $'
-       mensaje9 DB cr,lf,' y su perímetro es: $'
-       mensaje10 DB cr,lf,'El Area del trapecio es: $'
-       mensaje11 DB cr,lf,'Ingresa la longitud del lado no paralelo del trapecio isoceles: (presiona enter)$'
-       mensaje12 DB cr,lf,' y su perimetro es: $'
-       mensaje13 DB cr,lf, 'Ingresa el ancho del rectangulo: (presiona enter)$'
-       mensaje14 DB cr,lf, 'Ingresa el largo del rectangulo: (presiona enter)$'
-       mensaje15 DB cr,lf,'El Area del rectangulo es: $'
-       mensaje16 DB cr,lf,' y su perimetro es: $'
+       mensaje7 DB cr,lf,'Ingresa la longitud del lado no paralelo del trapecio isoceles: (presiona enter)$'
+       mensaje8 DB cr,lf,'El Area del trapecio es: $'
+       
+; mensajes para el cuadrado
+       mensaje9 DB cr,lf,'Ingresa el lado del cuadrado: (presiona enter)$'
+       mensaje10 DB cr,lf,'El Area del cuadrado es: $'       
+       
+; mensajes para el rectangulo       
+       mensaje11 DB cr,lf, 'Ingresa el ancho del rectangulo: (presiona enter)$'
+       mensaje12 DB cr,lf, 'Ingresa el largo del rectangulo: (presiona enter)$'
+       mensaje13 DB cr,lf,'El Area del rectangulo es: $'              
+       
+; mensajes para el rombo
+       mensaje14 DB cr,lf, 'Ingresa la diagonal menor del rombo$'
+       mensaje15 DB cr,lf, 'Ingresa la diagonal mayor del rombo$'
+       mensaje16 DB cr,lf, 'Ingresa el lado del rombo$'
+       mensaje17 DB cr,lf, 'El area del rombo es: $' 
+       
+       
+; mensaje para el perimetro
+       mensajep DB cr,lf,' y su perímetro es: $'
+       
+; mensaje de salida      
        salir DB cr,lf,'Saliendo del programa, presione cualquier tecla...$'
 
        f1 DW ?
@@ -57,7 +75,7 @@ inicio:
     INT 21H
 
     MOV AH, 09H
-    LEA DX, mensaje5
+    LEA DX, mensaje2
     INT 21H
 
     LEA DX, espa
@@ -75,6 +93,8 @@ inicio:
     JE cuadrado
     CMP AL, 03H
     JE rectangulo
+    CMP AL, 04H
+    JE rombo
     JMP inicio
 
 trapecio:
@@ -83,7 +103,7 @@ trapecio:
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensaje2
+    LEA DX, mensaje5
     INT 21H
 
     CALL SCAN_NUM
@@ -113,7 +133,7 @@ trapecio:
 
     MOV SI, AX      ; Guardar el área en SI
 
-    LEA DX, mensaje11
+    LEA DX, mensaje7
     MOV AH, 09H
     INT 21H
 
@@ -131,12 +151,12 @@ trapecio:
 
     ; Mostrar el área y el perímetro del trapecio en una sola línea
     MOV AH, 09H
-    LEA DX, mensaje10
+    LEA DX, mensaje8
     INT 21H
     MOV AX, SI
     CALL PRINT_NUM_UNS
 
-    LEA DX, mensaje12
+    LEA DX, mensajep
     MOV AH, 09H
     INT 21H
     MOV AX, DI
@@ -158,7 +178,7 @@ cuadrado:
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensaje7
+    LEA DX, mensaje9
     INT 21H
 
     CALL SCAN_NUM
@@ -179,12 +199,12 @@ cuadrado:
 
     ; Mostrar el área y el perímetro del cuadrado en una sola línea
     MOV AH, 09H
-    LEA DX, mensaje8
+    LEA DX, mensaje10
     INT 21H
     MOV AX, SI
     CALL PRINT_NUM_UNS
 
-    LEA DX, mensaje9
+    LEA DX, mensajep
     MOV AH, 09H
     INT 21H
     MOV AX, DI
@@ -206,14 +226,14 @@ rectangulo:
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensaje13 ; Mensaje para ingresar el ancho
+    LEA DX, mensaje11 ; Mensaje para ingresar el ancho
     INT 21H
 
     CALL SCAN_NUM
     MOV f1, CX ; Guardar el ancho en f1
 
     MOV AH, 09H
-    LEA DX, mensaje14 ; Mensaje para ingresar el largo
+    LEA DX, mensaje12 ; Mensaje para ingresar el largo
     INT 21H 
 
     CALL SCAN_NUM
@@ -236,12 +256,78 @@ rectangulo:
 
     ; Mostrar el área y el perímetro del rectángulo en una sola línea
     MOV AH, 09H
-    LEA DX, mensaje15 ; Mostrar mensaje del área del rectángulo
+    LEA DX, mensaje13 ; Mostrar mensaje del área del rectángulo
     INT 21H
     MOV AX, SI
     CALL PRINT_NUM_UNS
 
-    LEA DX, mensaje16 ; Mostrar mensaje del perímetro del rectángulo
+    LEA DX, mensajep ; Mostrar mensaje del perímetro del rectángulo
+    MOV AH, 09H
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01h
+    INT 21H
+    JMP inicio 
+    
+rombo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensaje14
+    INT 21H
+
+    CALL SCAN_NUM
+    MOV f1, CX 
+
+    MOV AH, 09H
+    LEA DX, mensaje15
+    INT 21H 
+
+    CALL SCAN_NUM
+    MOV f2, CX  
+    
+    
+    MOV AH, 09H
+    LEA DX, mensaje16
+    INT 21H 
+
+    CALL SCAN_NUM
+    MOV f3, CX
+
+    ; Calcular el área del rombo: ((base menor * base mayor) / 2)
+    MOV AX, f1      ; diagonal menor
+    MOV BX, f2      ; diagonal mayor
+    MUL BX          ; diagonal menor * diagonal mayor
+    MOV BX, c       ; 2
+    DIV BL          ; (diagonal menor * diagonal mayor) / 2
+    
+    MOV SI, AX      ; Guardar el área en SI
+
+
+    ; Calcular el perímetro del rombo: lado * 4
+    MOV AX, f3      ; lado
+    MOV BX, 4      ; 4
+    MUL BX
+    MOV DI, AX      ; Guardar el perímetro en DI
+
+    ; Mostrar el área y el perímetro del rombo en una sola línea
+    MOV AH, 09H
+    LEA DX, mensaje17
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, mensajep
     MOV AH, 09H
     INT 21H
     MOV AX, DI
