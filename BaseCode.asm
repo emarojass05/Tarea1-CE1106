@@ -23,12 +23,15 @@ LF EQU 10
        mensaje12 DB cr,lf,'El area del triangulo es:$'
        mensajeCt DB cr,lf,'Presione 1 para Area y 2 para perimetro?$'
        mensajeTri DB cr,lf,'Este es el triangulo, presione 1 para pasar a los calculos$'
+       mensaje6Tri DB cr,lf,'Ingresa la altura: (presiona enter)$'
+       mensaje2Tri DB cr,lf,'Ingresa el largo del triangulo: (presiona enter)$'
 
        f1 DW ?
        f2 DW ?
        f3 DW ?
 
        resultado DB cr,lf,'El area del trapecio es: $'
+       resultadoTri DB cr,lf,'El area del triangulo es: $'
        espa DB ' ',cr,lf,'$'
 
        c  equ 02
@@ -160,7 +163,7 @@ multiplica:
     MOV f2,CX
 
     MOV AH,09H
-    LEA DX,mensaje6
+    LEA DX,mensaje6Tri
     INT 21H 
 
     CALL SCAN_NUM
@@ -238,18 +241,11 @@ multiplica_tri:
     LEA DX,espa
     INT 21H
 
-    LEA DX,mensaje2
+    LEA DX,mensaje2Tri
     INT 21H
 
     CALL SCAN_NUM
     MOV f1,CX 
-
-    MOV AH,09H
-    LEA DX,mensaje3
-    INT 21H 
-
-    CALL SCAN_NUM
-    MOV f2,CX
 
     MOV AH,09H
     LEA DX,mensaje6
@@ -259,15 +255,14 @@ multiplica_tri:
     MOV f3,CX
 
     MOV AH,09H
-    LEA DX,resultado
+    LEA DX,resultadoTri
     INT 21H
 
-    MOV AX,f1        ; base menor
-    ADD AX,f2        ; base menor + base mayor
+    MOV AX,f1        ;largo
     MOV BX,c         ; 2
-    DIV BL           ; (base menor + base mayor) / 2
+    DIV BL           ; (largo) / 2
     MOV BX,f3        ; altura
-    MUL BX           ; ((base menor + base mayor) / 2) * altura
+    MUL BX           ; (largo / 2) * altura
 
     MOV CX,AX        ; Guardar el resultado en CX
     CALL PRINT_NUM_UNS ; Imprimir el número
