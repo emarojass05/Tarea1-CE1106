@@ -8,7 +8,17 @@ LF EQU 10
 .STACK 200 ; Se define la pila
 .DATA ; Se definen datos
        mensaje1 DB cr,lf,'Calculadora de Figuras$'
-       mensajeF DB cr,lf,'Que figura te gustaria seleccionar?$'
+       mensajeF DB CR, LF, 'Que figura te gustaria seleccionar?', CR, LF, LF
+        DB '1. Trapecio', CR, LF
+        DB '2. Triangulo', CR, LF
+        DB '3. Cuadrado', CR, LF
+        DB '4. Rectangulo', CR, LF
+        DB '5. Circulo', CR, LF
+        DB '6. Rombo', CR, LF
+        DB '7. Pentagono', CR, LF
+        DB '8. Paralelogramo', CR, LF
+        DB '9. Hexagono', '$'
+
        mensajeT DB cr,lf,'Este es el trapecio, presione 1 para pasar a los calculos$'
        mensajeC DB cr,lf,'Presione 1 para Area y 2 para perimetro?$'
        mensaje2 DB cr,lf,'Ingresa la base menor: (presiona enter)$'
@@ -24,7 +34,8 @@ LF EQU 10
        mensajeCt DB cr,lf,'Presione 1 para Area y 2 para perimetro?$'
        mensajeTri DB cr,lf,'Este es el triangulo, presione 1 para pasar a los calculos$'
        mensaje6Tri DB cr,lf,'Ingresa la altura: (presiona enter)$'
-       mensaje2Tri DB cr,lf,'Ingresa el largo del triangulo: (presiona enter)$'
+       mensaje2Tri DB cr,lf,'Ingresa el lado del triangulo: (presiona enter)$'
+       mensaje123 DB cr,lf,'El perimetro del triangulo es:$'
 
        f1 DW ?
        f2 DW ?
@@ -32,9 +43,12 @@ LF EQU 10
 
        resultado DB cr,lf,'El area del trapecio es: $'
        resultadoTri DB cr,lf,'El area del triangulo es: $'
+       resultadoTriP DB cr,lf,'El perimetro del triangulo es: $'
        espa DB ' ',cr,lf,'$'
 
        c  equ 02
+       a  equ 03
+       
 
 ;----------------------------------------------------------------
 .CODE Area
@@ -225,7 +239,10 @@ seleccion_calculoTri:
     SUB AL,30H 
     
     CMP AL,01H
-    JE multiplica_tri 
+    JE multiplica_tri
+    
+    CMP AL, 02H
+    JE perimetro_Tri 
     
     JMP inicio
          
@@ -263,6 +280,46 @@ multiplica_tri:
     DIV BL           ; (largo) / 2
     MOV BX,f3        ; altura
     MUL BX           ; (largo / 2) * altura
+
+    MOV CX,AX        ; Guardar el resultado en CX
+    CALL PRINT_NUM_UNS ; Imprimir el número
+
+    LEA DX,espa
+    INT 21H
+
+    LEA DX,mensaje4
+    INT 21H
+
+    MOV AH,01H
+    INT 21H
+    JMP inicio       ; Regresar al inicio
+    
+perimetro_Tri:
+    MOV AH,00H
+    MOV AL,03H
+    INT 10H
+
+    MOV AH,09H
+    LEA DX,mensaje123
+    INT 21H  
+
+    LEA DX,espa
+    INT 21H
+
+    LEA DX,mensaje2Tri
+    INT 21H
+
+    CALL SCAN_NUM
+    MOV f1,CX 
+
+    MOV AH,09H
+    LEA DX,resultadoTriP
+    INT 21H
+
+    MOV AX,f1        ;largo
+    MOV BX,a         ; 3
+    MUL BX           
+
 
     MOV CX,AX        ; Guardar el resultado en CX
     CALL PRINT_NUM_UNS ; Imprimir el número
