@@ -10,7 +10,7 @@ LF EQU 10
 
 ; mensajes de inicio
        mensaje1 DB cr,lf,'Programa que calcula el área y perímetro de un trapecio o un cuadrado.$'
-       mensaje2 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,4 para el rombo, 5 para el pentagono, 6 para el hexagono, 7 para el paralelogramo o presiona 0 para salir.$'
+       mensaje2 DB cr,lf,'Presiona 1 para calcular trapecio, 2 para calcular cuadrado, 3 para rectangulo,4 para el rombo, 5 para el pentagono, 6 para el hexagono, 7 para el paralelogramo, 8 para el circulo o presiona 0 para salir.$'
  
        
 ; mensajes para el trapecio
@@ -50,7 +50,11 @@ LF EQU 10
        mensaje24 DB cr,lf, 'Ingresa la base del paralelogramo: $'
        mensaje25 DB cr,lf, 'Ingresa el lado oblicuo del paralelogramo: $'
        mensaje26 DB cr,lf, 'Ingresa la altura del paralelogramo: $'
-       mensaje27 DB cr,lf, 'El area del paralelogramo es: $' 
+       mensaje27 DB cr,lf, 'El area del paralelogramo es: $'
+       
+; mensajes para el circulo
+       mensaje28 DB cr,lf, 'Ingresa el radio del circulo: $'
+       mensaje29 DB cr,lf, 'El area del circulo es: $' 
        
        
 ; mensaje para el perimetro
@@ -66,6 +70,7 @@ LF EQU 10
        f5 DW ? 
        f6 DW ?
        f7 DW ?
+       f8 DW ?
 
        resultado DB cr,lf,'El resultado es: $'
        espa DB ' ',cr,lf,'$'
@@ -119,7 +124,9 @@ inicio:
     CMP AL, 06H
     JE hexagono
     CMP AL, 07
-    JE paralelogramo
+    JE paralelogramo 
+    CMP AL, 08
+    JE circulo
     JMP inicio
 
 trapecio:
@@ -536,7 +543,58 @@ paralelogramo:
 
 ; Mostrar el área y el perímetro del hexagono en una sola línea
     MOV AH, 09H
-    LEA DX, mensaje23
+    LEA DX, mensaje27
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, mensajep
+    MOV AH, 09H
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01h
+    INT 21H
+    JMP inicio
+    
+circulo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensaje28
+    INT 21H
+
+    CALL SCAN_NUM
+    MOV f1, CX      ; radio del circulo
+
+; Calcular el área del circulo: pi * radio * radio
+    MOV AX, f1      ; radio
+    MUL AX          ; radio * radio
+    MOV BX, 3
+    MUL BX
+    MOV SI, AX      ; Guardar el área en SI
+
+; Calcular el perímetro del circulo: 2 * PI * R
+    MOV AX, f1      ; lado
+    MOV BX, 3       ; 4
+    MUL BX
+    MOV BX, 2
+    MUL BX          
+
+    MOV DI, AX      ; Guardar el perímetro en DI
+
+; Mostrar el área y el perímetro del circulo en una sola línea
+    MOV AH, 09H
+    LEA DX, mensaje29
     INT 21H
     MOV AX, SI
     CALL PRINT_NUM_UNS
