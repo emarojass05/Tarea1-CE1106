@@ -5,8 +5,8 @@ LF EQU 10
 
 ;---------------------------------------------
 .MODEL SMALL
-.STACK 200 ; Se define la pila
-.DATA ; Se definen datos
+.STACK 200 ; Se deFINe la pila
+.DATA ; Se deFINen datos
 
 ; mensajes de inicio
        mensaje1 DB cr,lf,'Programa que calcula el área y perímetro de un trapecio o un cuadrado.$'
@@ -71,6 +71,11 @@ LF EQU 10
        f6 DW ?
        f7 DW ?
        f8 DW ?
+       
+       total_input DW ?
+       next_digit DW ?      
+       
+       buffer DB 7, ?
 
        resultado DB cr,lf,'El resultado es: $'
        espa DB ' ',cr,lf,'$'
@@ -79,38 +84,81 @@ LF EQU 10
 
 ;----------------------------------------------------------------
 .CODE Area
-    DEFINE_SCAN_NUM
-    DEFINE_PRINT_NUM_UNS
-    jmp inicio
+    JMP INICIO 
+    
+; Función para leer los inputs del teclado (strings) y obtener su valor numérico
+SCAN_NUM:
+    MOV AH, 0AH        ; Funcion para buffered input
+    LEA DX, buffer     ; Cargar la dirección del buffer
+    INT 21H      
 
-inicio:
-    MOV ax, Data
-    MOV DS, AX
+    LEA SI, [buffer+2] ; Índice al primer caracter del buffer
+    MOV CL, [buffer+1] ; Cantidad de caracteres del input 
 
+NEXT_NUMBER:
+    DEC CL             ; Decrementar contador de caracteres
+    JL  END_CONVERSION ; Si CL < 0, ya se leyeron todos los chars 
+
+    MOV AL, [SI]       ; Almacenar el caracter del [SI] en AL
+    INC SI             ; Siguiente char
+    SUB AL, '0'        ; ASCII -> Valor numérico
+    XOR AH, AH         ; Limpiar AH
+
+    MOV BX, 10         
+    MOV next_digit, 0   ; Limpiar variable del dígito temporal
+    ADD next_digit, AX  ; Cargar dígito temporal (AX) en su variable correspondiente                      
+    MOV AX, total_input ; Cargar el número total actual en AX
+    MUL BX             ; Multiplica por 10 el numero actual para hacer espacio para el siguiente dígito 
+    ADD AX, next_digit  ; Añade el nuevo dígito temporal al número actual
+    MOV next_digit, 0   ; Limpiar variable del dígito temporal       
+    MOV total_input, AX ; Mover el valor numérico final a su variable
+
+    JMP NEXT_NUMBER     ; Repetir para el siguiente char
+
+END_CONVERSION:
+    MOV CX, total_input ; Valor numérico final -> CX
+    MOV total_input, 0 ; Limpiar var. 
+    RET
+    
+DEFINE_PRINT_NUM_UNS
+
+; Función para imprimir el contenido de DX y un espacio
+PRINTLN:
+    MOV AH, 09H
+    INT 21H
+
+    LEA DX, espa
+    INT 21H
+    RET
+; Función para crear un nuevo display   
+NEW_SCREEN:
     MOV AH, 00H
     MOV AL, 03H
     INT 10H
+    RET
 
+; Función para imprimir el contenido de DX    
+PRINT:
     MOV AH, 09H
-    LEA DX, mensaje1
     INT 21H
+    RET
 
-    LEA DX, espa
-    INT 21H
+INICIO:
+    MOV ax, Data
+    MOV DS, AX
 
-    MOV AH, 09H
+    CALL NEW_SCREEN
+
     LEA DX, mensaje2
+    MOV AH, 09H
     INT 21H
 
-    LEA DX, espa
-    INT 21H
-
-    MOV AH, 01H
+    MOV AH, 07H
     INT 21H
 
     SUB AL, 30H
     CMP AL, 00H
-    JE fin
+    JE FIN
     CMP AL, 01H
     JE trapecio
     CMP AL, 02H
@@ -127,7 +175,7 @@ inicio:
     JE paralelogramo 
     CMP AL, 08
     JE circulo
-    JMP inicio
+    JMP INICIO
 
 trapecio:
     MOV AH, 00H
@@ -202,7 +250,7 @@ trapecio:
 
     MOV AH, 01h
     INT 21H
-    JMP inicio
+    JMP INICIO
 
 cuadrado:
     MOV AH, 00H
@@ -243,6 +291,7 @@ cuadrado:
     CALL PRINT_NUM_UNS
 
     LEA DX, espa
+    MOV AH, 09H
     INT 21H
 
     LEA DX, mensaje4
@@ -250,7 +299,7 @@ cuadrado:
 
     MOV AH, 01h
     INT 21H
-    JMP inicio 
+    JMP INICIO 
       
     
 rectangulo:
@@ -301,6 +350,7 @@ rectangulo:
     CALL PRINT_NUM_UNS
 
     LEA DX, espa
+    MOV AH, 09H
     INT 21H
 
     LEA DX, mensaje4
@@ -308,7 +358,7 @@ rectangulo:
 
     MOV AH, 01h
     INT 21H
-    JMP inicio 
+    JMP INICIO 
     
     
 rombo:
@@ -375,7 +425,7 @@ rombo:
 
     MOV AH, 01h
     INT 21H
-    JMP inicio
+    JMP INICIO
 
     
 pentagono:
@@ -436,7 +486,7 @@ pentagono:
 
     MOV AH, 01h
     INT 21H
-    JMP inicio       
+    JMP INICIO      
     
 hexagono:
     MOV AH, 00H
@@ -496,7 +546,7 @@ hexagono:
 
     MOV AH, 01h
     INT 21H
-    JMP inicio       
+    JMP INICIO       
     
 paralelogramo:
     MOV AH, 00H
@@ -562,7 +612,7 @@ paralelogramo:
 
     MOV AH, 01h
     INT 21H
-    JMP inicio
+    JMP INICIO
     
 circulo:
     MOV AH, 00H
@@ -613,16 +663,16 @@ circulo:
 
     MOV AH, 01h
     INT 21H
-    JMP inicio
+    JMP INICIO
 
     
 
-fin:
+FIN:
     MOV AH, 09H
     LEA DX, salir
     INT 21H 
 
-    MOV AH, 01h
+    MOV AH, 07H
     INT 21H
 
     MOV AH, 01H
