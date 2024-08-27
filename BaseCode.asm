@@ -674,6 +674,7 @@ perimetro_Cua:
     INT 21H
     JMP inicio
     
+;Rectangulo        
 Rectangulo:
     MOV AH, 09H
     LEA DX, mensajeR    
