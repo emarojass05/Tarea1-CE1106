@@ -20,7 +20,7 @@ LF EQU 10
         DB '8. Paralelogramo', CR, LF
         DB '9. Hexagono', '$'
 
-       mensajeT DB cr,lf,'Este es el trapecio, presione 1 para pasar a los calculos$'
+       mensajeT DB cr,lf,'Este es el trapecio, presione 1 para pasar a los calculos y 0 para volver al inicio$'
        mensajeC DB cr,lf,'Presione 1 para Area y 2 para perimetro?$'
        mensaje2 DB cr,lf,'Ingresa la base menor: (presiona enter)$'
        mensaje3 DB cr,lf,'Ingresa la base mayor: (presiona enter)$'
@@ -29,10 +29,10 @@ LF EQU 10
        mensaje6 DB cr,lf,'Ingresa la altura: (presiona enter)$'
        mensaje10 DB cr,lf,'El area del trapecio es:$' 
        mensajePT DB  cr,lf, 'El perimetro del trapecio es: $'
-       mensajeBMT DB cr,lf,'Ingrese el valor de la base menor del Trapecio. $'
-       mensajeBMAT DB cr,lf,'Ingrese el valor de la base mayor del Trapecio$' 
+       mensajeBMT DB cr,lf,'Ingrese el valor de la base menor del Trapecio:  $'
+       mensajeBMAT DB cr,lf,'Ingrese el valor de la base mayor del Trapecio: $' 
        mensajeDT DB cr,lf,'Ingrese el valor de la diagonal del Trapecio$'
-       mensajeRPT DB cr,lf,'El perimetro del trapecio es de:$'
+       mensajeRPT DB cr,lf,'El perimetro del trapecio es de: $'
        salir DB cr,lf,'Saliendo del programa presione cualquier tecla..$'
        
        
@@ -41,7 +41,7 @@ LF EQU 10
        ;Mensajes de Triangulo
        mensaje12 DB cr,lf,'El area del triangulo es:$'
        mensajeCt DB cr,lf,'Presione 1 para Area y 2 para perimetro?$'
-       mensajeTri DB cr,lf,'Este es el triangulo, presione 1 para pasar a los calculos$'
+       mensajeTri DB cr,lf,'Este es el triangulo, presione 1 para pasar a los calculos y 0 para volver al inicio$'
        mensaje6Tri DB cr,lf,'Ingresa la altura: (presiona enter)$'
        mensaje2Tri DB cr,lf,'Ingresa el lado del triangulo: (presiona enter)$'
        mensaje123 DB cr,lf,'El perimetro del triangulo es:$'
