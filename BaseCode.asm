@@ -63,39 +63,39 @@ LF EQU 10
        mensajeLR DB cr,lf,'Ingresa el largo del rectangulo: (presiona enter)$'
        mensajeANR DB cr,lf,'Ingresa el ancho del rectangulo: (presiona enter)$'
        
-       ;Mensajes del CÌrculo
-       mensajeCirculo DB CR, LF, 'Este es el cÌrculo, presione 1 para pasar a los c·lculos y 0 para volver al inicio$'
-       mensajeAreaCirculo DB CR, LF, '¡rea del cÌrculo:$' 
-       mensajeACirculo DB CR, LF, 'El ·rea del cÌrculo es:$'
-       mensajePeriCirculo DB CR, LF, 'PerÌmetro del cÌrculo:$'
-       mensajePCirculo DB CR, LF, 'El perÌmetro del cÌrculo es:$' 
+       ;Mensajes del C√≠rculo
+       mensajeCirculo DB CR, LF, 'Este es el c√≠rculo, presione 1 para pasar a los c√°lculos y 0 para volver al inicio$'
+       mensajeAreaCirculo DB CR, LF, '√Årea del c√≠rculo:$' 
+       mensajeACirculo DB CR, LF, 'El √°rea del c√≠rculo es:$'
+       mensajePeriCirculo DB CR, LF, 'Per√≠metro del c√≠rculo:$'
+       mensajePCirculo DB CR, LF, 'El per√≠metro del c√≠rculo es:$' 
        mensajeRadio DB CR, LF, 'Ingrese el radio del circulo:$'
        
        ; Datos del rombo
-       mensajeRombo DB CR, LF, 'Este es el rombo, presione 1 para pasar a los c·lculos y 0 para volver al inicio$'
+       mensajeRombo DB CR, LF, 'Este es el rombo, presione 1 para pasar a los c√°lculos y 0 para volver al inicio$'
        mensajeDiag1 DB CR, LF, 'Ingrese la longitud de la diagonal 1: (presione enter)$'
        mensajeDiag2 DB CR, LF, 'Ingrese la longitud de la diagonal 2: (presione enter)$'
-       mensajeAreaRombo DB CR, LF, 'El ·rea del rombo es: $'
-       mensajePeriRombo DB CR, LF, 'El perÌmetro del rombo es: $'   
+       mensajeAreaRombo DB CR, LF, 'El √°rea del rombo es: $'
+       mensajePeriRombo DB CR, LF, 'El per√≠metro del rombo es: $'   
        
        ; Datos del Pentagono
-       mensajePentagono DB CR, LF, 'Este es el pentagono, presione 1 para pasar a los c·lculos y 0 para volver al inicio$'
-       mensajeLadoP DB CR, LF, 'Ingrese la longitud del lado del pent·gono: (presione enter)$'
-       mensajeAreaP DB CR, LF, 'El ·rea del pent·gono es: $'
-       mensajePeriP DB CR, LF, 'El perÌmetro del pent·gono es: $'   
+       mensajePentagono DB CR, LF, 'Este es el pentagono, presione 1 para pasar a los c√°lculos y 0 para volver al inicio$'
+       mensajeLadoP DB CR, LF, 'Ingrese la longitud del lado del pent√°gono: (presione enter)$'
+       mensajeAreaP DB CR, LF, 'El √°rea del pent√°gono es: $'
+       mensajePeriP DB CR, LF, 'El per√≠metro del pent√°gono es: $'   
        
        ; Datos del Paralelogramo
-       mensajeParalelogramo DB CR, LF, 'Este es el paralelogramo, presione 1 para pasar a los c·lculos y 0 para volver al inicio$'
+       mensajeParalelogramo DB CR, LF, 'Este es el paralelogramo, presione 1 para pasar a los c√°lculos y 0 para volver al inicio$'
        mensajeBase DB CR, LF, 'Ingrese la longitud de la base del paralelogramo: (presione enter)$'
        mensajeAltura DB CR, LF, 'Ingrese la altura del paralelogramo: (presione enter)$'
-       mensajeAreaPar DB CR, LF, 'El ·rea del paralelogramo es: $'
-       mensajePeriPar DB CR, LF, 'El perÌmetro del paralelogramo es: $'
+       mensajeAreaPar DB CR, LF, 'El √°rea del paralelogramo es: $'
+       mensajePeriPar DB CR, LF, 'El per√≠metro del paralelogramo es: $'
        
-       ; Datos del Hex·gono
-       mensajeHexagono DB CR, LF, 'Este es el hex·gono, presione 1 para pasar a los c·lculos y 0 para volver al inicio$'
-       mensajeLadoH DB CR, LF, 'Ingrese la longitud del lado del hex·gono: (presione enter)$'
-       mensajeAreaH DB CR, LF, 'El ·rea del hex·gono es: $'
-       mensajePeriH DB CR, LF, 'El perÌmetro del hex·gono es: $'
+       ; Datos del Hex√°gono
+       mensajeHexagono DB CR, LF, 'Este es el hex√°gono, presione 1 para pasar a los c√°lculos y 0 para volver al inicio$'
+       mensajeLadoH DB CR, LF, 'Ingrese la longitud del lado del hex√°gono: (presione enter)$'
+       mensajeAreaH DB CR, LF, 'El √°rea del hex√°gono es: $'
+       mensajePeriH DB CR, LF, 'El per√≠metro del hex√°gono es: $'
 
        
        i1 DW ?
@@ -137,13 +137,13 @@ LF EQU 10
     DEFINE_PRINT_NUM_UNS
     jmp inicio
     
-    
+ ; Funci√≥n para leer los inputs del teclado (strings) y obtener su valor num√©rico   
  SCAN_NUM:
     MOV AH, 0AH        ; Funcion para buffered input
-    LEA DX, buffer     ; Cargar la direcciÛn del buffer
+    LEA DX, buffer     ; Cargar la direcci√≥n del buffer
     INT 21H      
 
-    LEA SI, [buffer+2] ; Õndice al primer caracter del buffer
+    LEA SI, [buffer+2] ; √çndice al primer caracter del buffer
     MOV CL, [buffer+1] ; Cantidad de caracteres del input 
 
 NEXT_NUMBER:
@@ -152,19 +152,19 @@ NEXT_NUMBER:
 
     MOV AL, [SI]       ; Almacenar el caracter del [SI] en AL
     INC SI             ; Siguiente char
-    ;CMP AL, '.'        ; Leer el punto y comenzar la conversion de la parte fraccional
-    ;JZ  BEGIN_FLOATS
-    SUB AL, '0'        ; ASCII -> Valor numÈrico
+    CMP AL, '.'        ; Leer el punto y comenzar la conversion de la parte fraccional
+    JZ  BEGIN_FLOATS
+    SUB AL, '0'        ; ASCII -> Valor num√©rico
     XOR AH, AH         ; Limpiar AH
 
     MOV BX, 10         
-    MOV next_digit, 0   ; Limpiar variable del dÌgito temporal
-    ADD next_digit, AX  ; Cargar dÌgito temporal (AX) en su variable correspondiente                      
-    MOV AX, total_int_input ; Cargar el n˙mero total actual en AX
-    MUL BX              ; Multiplica por 10 el numero actual para hacer espacio para el siguiente dÌgito 
-    ADD AX, next_digit  ; AÒade el nuevo dÌgito temporal al n˙mero actual
-    MOV next_digit, 0   ; Limpiar variable del dÌgito temporal       
-    MOV total_int_input, AX ; Mover el valor numÈrico final a su variable
+    MOV next_digit, 0   ; Limpiar variable del d√≠gito temporal
+    ADD next_digit, AX  ; Cargar d√≠gito temporal (AX) en su variable correspondiente                      
+    MOV AX, total_int_input ; Cargar el n√∫mero total actual en AX
+    MUL BX              ; Multiplica por 10 el numero actual para hacer espacio para el siguiente d√≠gito 
+    ADD AX, next_digit  ; A√±ade el nuevo d√≠gito temporal al n√∫mero actual
+    MOV next_digit, 0   ; Limpiar variable del d√≠gito temporal       
+    MOV total_int_input, AX ; Mover el valor num√©rico final a su variable
 
     JMP NEXT_NUMBER     ; Repetir para el siguiente char   
 
@@ -173,35 +173,48 @@ BEGIN_FLOATS:
     
 NEXT_FLOAT_NUMBER:
     DEC CL             ; Decrementar contador de caracteres
+    JL  END_FLOATS_CONVERSION ; Si CL < 0, ya se leyeron todos los chars
     DEC CH
-    JL  END_CONVERSION ; Si CL o CH < 0, ya se leyeron todos los chars o se alcanzÛ el lÌmite de cifras float
+    JL  END_CONVERSION ; Si CH < 0, se alcanz√≥ el l√≠mite de cifras float
 
     MOV AL, [SI]       ; Almacenar el caracter del [SI] en AL
     INC SI             ; Siguiente char
-    SUB AL, '0'        ; ASCII -> Valor numÈrico
+    SUB AL, '0'        ; ASCII -> Valor num√©rico
     XOR AH, AH         ; Limpiar AH
 
     MOV BX, 10         
-    MOV next_digit, 0   ; Limpiar variable del dÌgito temporal
-    ADD next_digit, AX  ; Cargar dÌgito temporal (AX) en su variable correspondiente                      
-    MOV AX, total_float_input ; Cargar el n˙mero total actual en AX
-    MUL BX              ; Multiplica por 10 el numero actual para hacer espacio para el siguiente dÌgito 
-    ADD AX, next_digit  ; AÒade el nuevo dÌgito temporal al n˙mero actual
-    MOV next_digit, 0   ; Limpiar variable del dÌgito temporal       
-    MOV total_float_input, AX ; Mover el valor numÈrico final a su variable
+    MOV next_digit, 0   ; Limpiar variable del d√≠gito temporal
+    ADD next_digit, AX  ; Cargar d√≠gito temporal (AX) en su variable correspondiente                      
+    MOV AX, total_float_input ; Cargar el n√∫mero total actual en AX
+    MUL BX              ; Multiplica por 10 el numero actual para hacer espacio para el siguiente d√≠gito 
+    ADD AX, next_digit  ; A√±ade el nuevo d√≠gito temporal al n√∫mero actual
+    MOV next_digit, 0   ; Limpiar variable del d√≠gito temporal       
+    MOV total_float_input, AX ; Mover el valor num√©rico final a su variable
 
     JMP NEXT_FLOAT_NUMBER     ; Repetir para el siguiente char
-
+    
+END_FLOATS_CONVERSION:
+    CMP total_float_input, 10
+    JL  FILL_FLOAT
+    JMP END_CONVERSION
+    
+FILL_FLOAT:
+    MOV AX, total_float_input
+    MOV BX, 10
+    MUL BX
+    MOV total_float_input, AX
+    JMP END_CONVERSION
+    
 END_CONVERSION:
-    MOV CX, total_int_input ; Valor numÈrico entero final -> CX
+    MOV CX, total_int_input ; Valor num√©rico entero final -> CX
     MOV total_int_input, 0 ; Limpiar var.
-    MOV DX, total_float_input ; Valor numÈrico float final -> DX
+    MOV DX, total_float_input ; Valor num√©rico float final -> DX
     MOV total_float_input, 0 ; Limpiar var.
      
     RET
 
 
-; FunciÛn para imprimir el contenido de DX y un espacio
+; Funci√≥n para imprimir el contenido de DX y un espacio
 PRINTLN:
     MOV AH, 09H
     INT 21H
@@ -209,14 +222,14 @@ PRINTLN:
     LEA DX, espa
     INT 21H
     RET
-; FunciÛn para crear un nuevo display   
+; Funci√≥n para crear un nuevo display   
 NEW_SCREEN:
     MOV AH, 00H
     MOV AL, 03H
     INT 10H
     RET
 
-; FunciÛn para imprimir el contenido de DX    
+; Funci√≥n para imprimir el contenido de DX    
 PRINT:
     MOV AH, 09H
     INT 21H
@@ -234,7 +247,7 @@ inicio:
     LEA DX,espa
     INT 21H
 
-    ; Mostrar el mensaje de confirmaciÛn
+    ; Mostrar el mensaje de confirmaci√≥n
     MOV AH,09H
     LEA DX,mensaje5
     INT 21H
@@ -245,7 +258,7 @@ inicio:
     ; Leer la entrada del usuario
     MOV AH,01H
     INT 21H
-    SUB AL,30H        ; Convertir de ASCII a n˙mero
+    SUB AL,30H        ; Convertir de ASCII a n√∫mero
 
     ; Comparar la entrada
     CMP AL,00H
@@ -257,7 +270,7 @@ inicio:
     JMP inicio
 
 seleccion_figura:
-    ; Mostrar el mensaje de selecciÛn de figura
+    ; Mostrar el mensaje de selecci√≥n de figura
     MOV AH,09H
     LEA DX,mensajeF
     INT 21H
@@ -268,11 +281,11 @@ seleccion_figura:
     ; Leer la entrada del usuario para la figura
     MOV AH,01H
     INT 21H
-    SUB AL,30H        ; Convertir de ASCII a n˙mero
+    SUB AL,30H        ; Convertir de ASCII a n√∫mero
 
     ; Comparar la entrada para la figura
     CMP AL,01H
-    JE trapecio     ; Si la entrada es 1, ir a la rutina de c·lculo
+    JE trapecio     ; Si la entrada es 1, ir a la rutina de c√°lculo
     
     CMP AL, 02H
     JE triangulo
@@ -390,7 +403,7 @@ multiplica:
     MUL BX           ; ((base menor + base mayor) / 2) * altura
 
     MOV CX,AX        ; Guardar el resultado en CX
-    CALL PRINT_NUM_UNS ; Imprimir el n˙mero
+    CALL PRINT_NUM_UNS ; Imprimir el n√∫mero
 
     LEA DX,espa
     INT 21H
@@ -551,7 +564,7 @@ multiplica_tri:
 
 
     MOV CX,AX        ; Guardar el resultado en CX
-    CALL PRINT_NUM_UNS ; Imprimir el n˙mero
+    CALL PRINT_NUM_UNS ; Imprimir el n√∫mero
 
     LEA DX,espa
     INT 21H
@@ -591,7 +604,7 @@ perimetro_Tri:
 
 
     MOV CX,AX        ; Guardar el resultado en CX
-    CALL PRINT_NUM_UNS ; Imprimir el n˙mero
+    CALL PRINT_NUM_UNS ; Imprimir el n√∫mero
 
     LEA DX,espa
     INT 21H
@@ -838,10 +851,10 @@ perimetro_Rec:
     
     MOV AX, i1      ; ancho
     ADD AX, i2      ; ancho + largo
-    MOV BX, 2       ; multiplicador para el perÌmetro
+    MOV BX, 2       ; multiplicador para el per√≠metro
     MUL BX          ; 2 * (ancho + largo)
 
-    MOV DI, AX      ; Guardar el perÌmetro en DI
+    MOV DI, AX      ; Guardar el per√≠metro en DI
     
     MOV AH, 09H
     LEA DX, mensajePR
@@ -918,14 +931,14 @@ calcular_areaCirculo:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX      ; radio del cÌrculo
+    MOV i1, CX      ; radio del c√≠rculo
 
     ; Calcular el Area del circulo: PI * radio * radio
     MOV AX, i1      ; radio
     MUL AX          ; radio * radio
     MOV BX, 3
     MUL BX     ; 3 * (radio * radio)
-    MOV SI, AX      ; Guardar el ·rea en SI
+    MOV SI, AX      ; Guardar el √°rea en SI
 
     MOV AH, 09H
     LEA DX, mensajeACirculo
@@ -959,15 +972,15 @@ calcular_perimetroCirculo:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX      ; radio del cÌrculo
+    MOV i1, CX      ; radio del c√≠rculo
     
-    ; Calcular el perÌmetro del cÌrculo: 2 * PI * radio
+    ; Calcular el per√≠metro del c√≠rculo: 2 * PI * radio
     MOV AX, i1      ; radio
     MOV BX, 2
     MUL BX     ; 2 * radio
     MOV BX, 3
     MUL BX     ; 3 * (2 * radio)
-    MOV DI, AX      ; Guardar el perÌmetro en DI
+    MOV DI, AX      ; Guardar el per√≠metro en DI
 
     MOV AH, 09H
     LEA DX, mensajePCirculo
@@ -985,7 +998,7 @@ calcular_perimetroCirculo:
     INT 21H
     JMP inicio
 
-; CÛdigo del rombo
+; C√≥digo del rombo
 rombo:
     MOV AH, 09H
     LEA DX, mensajeRombo    
@@ -1048,12 +1061,12 @@ calcular_areaRombo:
     CALL SCAN_NUM
     MOV i2, CX      ; Diagonal 2
 
-    ; C·lculo del ·rea: (Diagonal 1 * Diagonal 2) / 2
+    ; C√°lculo del √°rea: (Diagonal 1 * Diagonal 2) / 2
     MOV AX, i1
     MUL i2          ; Diagonal 1 * Diagonal 2
     MOV BX, 2
     DIV BX          ; (Diagonal 1 * Diagonal 2) / 2
-    MOV SI, AX      ; Guardar el ·rea en SI
+    MOV SI, AX      ; Guardar el √°rea en SI
 
     MOV AH, 09H
     LEA DX, mensajeAreaRombo
@@ -1096,12 +1109,12 @@ calcular_perimetroRombo:
     CALL SCAN_NUM
     MOV i2, CX      ; Diagonal 2
 
-    ; C·lculo del perÌmetro: 2 * (Diagonal 1 + Diagonal 2)
+    ; C√°lculo del per√≠metro: 2 * (Diagonal 1 + Diagonal 2)
     MOV AX, i1
     ADD AX, i2      ; Diagonal 1 + Diagonal 2
     MOV BX, 2
     MUL BX          ; 2 * (Diagonal 1 + Diagonal 2)
-    MOV DI, AX      ; Guardar el perÌmetro en DI
+    MOV DI, AX      ; Guardar el per√≠metro en DI
 
     MOV AH, 09H
     LEA DX, mensajePeriRombo
@@ -1119,7 +1132,7 @@ calcular_perimetroRombo:
     INT 21H
     JMP inicio
 
-; CÛdigo del Pent·gono
+; C√≥digo del Pent√°gono
 pentagono:
     MOV AH, 09H
     LEA DX, mensajePentagono    
@@ -1170,14 +1183,14 @@ calcular_areaPentagono:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX      ; Lado del pent·gono
+    MOV i1, CX      ; Lado del pent√°gono
     
-    ; C·lculo del ·rea: (sqrt(5 * (5 + 2 * sqrt(5))) / 4) * lado^2
+    ; C√°lculo del √°rea: (sqrt(5 * (5 + 2 * sqrt(5))) / 4) * lado^2
     MOV AX, i1
     MUL AX          ; Lado^2
-    MOV BX, 172     ; AproximaciÛn de (sqrt(5 * (5 + 2 * sqrt(5))) / 4)
+    MOV BX, 172     ; Aproximaci√≥n de (sqrt(5 * (5 + 2 * sqrt(5))) / 4)
     DIV BX          ; (lado^2 * 172) / 4
-    MOV SI, AX      ; Guardar el ·rea en SI
+    MOV SI, AX      ; Guardar el √°rea en SI
 
     MOV AH, 09H
     LEA DX, mensajeAreaP
@@ -1208,13 +1221,13 @@ calcular_perimetroPentagono:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX      ; Lado del pent·gono
+    MOV i1, CX      ; Lado del pent√°gono
 
-    ; C·lculo del perÌmetro: 5 * lado
+    ; C√°lculo del per√≠metro: 5 * lado
     MOV AX, i1
     MOV BX, 5
     MUL BX          ; 5 * lado
-    MOV DI, AX      ; Guardar el perÌmetro en DI
+    MOV DI, AX      ; Guardar el per√≠metro en DI
 
     MOV AH, 09H
     LEA DX, mensajePeriP
@@ -1232,7 +1245,7 @@ calcular_perimetroPentagono:
     INT 21H
     JMP inicio    
     
-; CÛdigo del Paralelogramo
+; C√≥digo del Paralelogramo
 paralelogramo:
     MOV AH, 09H
     LEA DX, mensajeParalelogramo    
@@ -1295,10 +1308,10 @@ calcular_areaParalelogramo:
     CALL SCAN_NUM
     MOV i2, CX      ; Altura del paralelogramo
 
-    ; C·lculo del ·rea: base * altura
+    ; C√°lculo del √°rea: base * altura
     MOV AX, i1
     MUL i2          ; base * altura
-    MOV SI, AX      ; Guardar el ·rea en SI
+    MOV SI, AX      ; Guardar el √°rea en SI
 
     MOV AH, 09H
     LEA DX, mensajeAreaPar
@@ -1341,12 +1354,12 @@ calcular_perimetroParalelogramo:
     CALL SCAN_NUM
     MOV i2, CX      ; Altura del paralelogramo
 
-    ; C·lculo del perÌmetro: 2 * (base + altura)
+    ; C√°lculo del per√≠metro: 2 * (base + altura)
     MOV AX, i1
     ADD AX, i2      ; base + altura
     MOV BX, 2
     MUL BX          ; 2 * (base + altura)
-    MOV DI, AX      ; Guardar el perÌmetro en DI
+    MOV DI, AX      ; Guardar el per√≠metro en DI
 
     MOV AH, 09H
     LEA DX, mensajePeriPar
@@ -1364,7 +1377,7 @@ calcular_perimetroParalelogramo:
     INT 21H
     JMP inicio         
    
-    ; CÛdigo del Hex·gono
+    ; C√≥digo del Hex√°gono
 hexagono:
     MOV AH, 09H
     LEA DX, mensajeHexagono    
@@ -1415,14 +1428,14 @@ calcular_areaHexagono:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX      ; Lado del hex·gono
+    MOV i1, CX      ; Lado del hex√°gono
     
-    ; C·lculo del ·rea: ((3 * sqrt(3)) / 2) * lado^2
+    ; C√°lculo del √°rea: ((3 * sqrt(3)) / 2) * lado^2
     MOV AX, i1
     MUL AX          ; Lado^2
-    MOV BX, 155     ; AproximaciÛn de ((3 * sqrt(3)) / 2)
+    MOV BX, 155     ; Aproximaci√≥n de ((3 * sqrt(3)) / 2)
     DIV BX          ; (lado^2 * 155) / 2
-    MOV SI, AX      ; Guardar el ·rea en SI
+    MOV SI, AX      ; Guardar el √°rea en SI
 
     MOV AH, 09H
     LEA DX, mensajeAreaH
@@ -1453,13 +1466,13 @@ calcular_perimetroHexagono:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX      ; Lado del hex·gono
+    MOV i1, CX      ; Lado del hex√°gono
 
-    ; C·lculo del perÌmetro: 6 * lado
+    ; C√°lculo del per√≠metro: 6 * lado
     MOV AX, i1
     MOV BX, 6
     MUL BX          ; 6 * lado
-    MOV DI, AX      ; Guardar el perÌmetro en DI
+    MOV DI, AX      ; Guardar el per√≠metro en DI
 
     MOV AH, 09H
     LEA DX, mensajePeriH
