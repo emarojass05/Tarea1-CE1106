@@ -62,7 +62,16 @@ LF EQU 10
        
 ; mensaje de salida      
        salir DB cr,lf,'Saliendo del programa, presione cualquier tecla...$'
-
+       
+       i1 DW ?
+       i2 DW ?
+       i3 DW ?
+       i4 DW ?
+       i5 DW ? 
+       i6 DW ?
+       i7 DW ?
+       i8 DW ?
+              
        f1 DW ?
        f2 DW ?
        f3 DW ?
@@ -71,9 +80,11 @@ LF EQU 10
        f6 DW ?
        f7 DW ?
        f8 DW ?
-       
-       total_input DW ?
-       next_digit DW ?      
+                 
+       total_int_input DW ?
+       total_float_input DW ?
+       next_digit DW ?
+             
        
        buffer DB 7, ?
 
@@ -101,23 +112,52 @@ NEXT_NUMBER:
 
     MOV AL, [SI]       ; Almacenar el caracter del [SI] en AL
     INC SI             ; Siguiente char
+    CMP AL, '.'        ; Leer el punto y comenzar la conversion de la parte fraccional
+    JZ  BEGIN_FLOATS
     SUB AL, '0'        ; ASCII -> Valor numérico
     XOR AH, AH         ; Limpiar AH
 
     MOV BX, 10         
     MOV next_digit, 0   ; Limpiar variable del dígito temporal
     ADD next_digit, AX  ; Cargar dígito temporal (AX) en su variable correspondiente                      
-    MOV AX, total_input ; Cargar el número total actual en AX
-    MUL BX             ; Multiplica por 10 el numero actual para hacer espacio para el siguiente dígito 
+    MOV AX, total_int_input ; Cargar el número total actual en AX
+    MUL BX              ; Multiplica por 10 el numero actual para hacer espacio para el siguiente dígito 
     ADD AX, next_digit  ; Añade el nuevo dígito temporal al número actual
     MOV next_digit, 0   ; Limpiar variable del dígito temporal       
-    MOV total_input, AX ; Mover el valor numérico final a su variable
+    MOV total_int_input, AX ; Mover el valor numérico final a su variable
 
-    JMP NEXT_NUMBER     ; Repetir para el siguiente char
+    JMP NEXT_NUMBER     ; Repetir para el siguiente char   
+
+BEGIN_FLOATS:
+    MOV CH, 2
+    
+NEXT_FLOAT_NUMBER:
+    DEC CL             ; Decrementar contador de caracteres
+    DEC CH
+    JL  END_CONVERSION ; Si CL o CH < 0, ya se leyeron todos los chars o se alcanzó el límite de cifras float
+
+    MOV AL, [SI]       ; Almacenar el caracter del [SI] en AL
+    INC SI             ; Siguiente char
+    SUB AL, '0'        ; ASCII -> Valor numérico
+    XOR AH, AH         ; Limpiar AH
+
+    MOV BX, 10         
+    MOV next_digit, 0   ; Limpiar variable del dígito temporal
+    ADD next_digit, AX  ; Cargar dígito temporal (AX) en su variable correspondiente                      
+    MOV AX, total_float_input ; Cargar el número total actual en AX
+    MUL BX              ; Multiplica por 10 el numero actual para hacer espacio para el siguiente dígito 
+    ADD AX, next_digit  ; Añade el nuevo dígito temporal al número actual
+    MOV next_digit, 0   ; Limpiar variable del dígito temporal       
+    MOV total_float_input, AX ; Mover el valor numérico final a su variable
+
+    JMP NEXT_FLOAT_NUMBER     ; Repetir para el siguiente char
 
 END_CONVERSION:
-    MOV CX, total_input ; Valor numérico final -> CX
-    MOV total_input, 0 ; Limpiar var. 
+    MOV CX, total_int_input ; Valor numérico entero final -> CX
+    MOV total_int_input, 0 ; Limpiar var.
+    MOV DX, total_float_input ; Valor numérico float final -> DX
+    MOV total_float_input, 0 ; Limpiar var.
+     
     RET
     
 DEFINE_PRINT_NUM_UNS
@@ -187,28 +227,28 @@ trapecio:
     INT 21H
 
     CALL SCAN_NUM
-    MOV f1, CX 
+    MOV i1, CX 
 
     MOV AH, 09H
     LEA DX, mensaje3
     INT 21H 
 
     CALL SCAN_NUM
-    MOV f2, CX
+    MOV i2, CX
 
     MOV AH, 09H
     LEA DX, mensaje6
     INT 21H 
 
     CALL SCAN_NUM
-    MOV f3, CX
+    MOV i3, CX
 
 ; Calcular el área del trapecio: ((base menor + base mayor) / 2) * altura
-    MOV AX, f1      ; base menor
-    ADD AX, f2      ; base menor + base mayor
+    MOV AX, i1      ; base menor
+    ADD AX, i2      ; base menor + base mayor
     MOV BX, c       ; 2
     DIV BL          ; (base menor + base mayor) / 2
-    MOV BX, f3      ; altura
+    MOV BX, i3      ; altura
     MUL BX          ; ((base menor + base mayor) / 2) * altura
 
     MOV SI, AX      ; Guardar el área en SI
@@ -218,12 +258,12 @@ trapecio:
     INT 21H
 
     CALL SCAN_NUM
-    MOV f4, CX      ; lado no paralelo del trapecio isósceles
+    MOV i4, CX      ; lado no paralelo del trapecio isósceles
 
 ; Calcular el perímetro del trapecio: base menor + base mayor + 2 * lado no paralelo
-    MOV AX, f1      ; base menor
-    ADD AX, f2      ; base menor + base mayor
-    MOV BX, f4      ; lado no paralelo
+    MOV AX, i1      ; base menor
+    ADD AX, i2      ; base menor + base mayor
+    MOV BX, i4      ; lado no paralelo
     ADD AX, BX      ; base menor + base mayor + lado no paralelo
     ADD AX, BX      ; base menor + base mayor + 2 * lado no paralelo
 
@@ -262,16 +302,16 @@ cuadrado:
     INT 21H
 
     CALL SCAN_NUM
-    MOV f1, CX      ; Lado del cuadrado
+    MOV i1, CX      ; Lado del cuadrado
 
 ; Calcular el área del cuadrado: lado * lado
-    MOV AX, f1      ; lado
+    MOV AX, i1      ; lado
     MUL AX          ; lado * lado
 
     MOV SI, AX      ; Guardar el área en SI
 
 ; Calcular el perímetro del cuadrado: 4 * lado
-    MOV AX, f1      ; lado
+    MOV AX, i1      ; lado
     MOV BX, 4       ; 4
     MUL BX          ; 4 * lado
 
@@ -312,25 +352,25 @@ rectangulo:
     INT 21H
 
     CALL SCAN_NUM
-    MOV f1, CX ; Guardar el ancho en f1
+    MOV i1, CX ; Guardar el ancho en i1
 
     MOV AH, 09H
     LEA DX, mensaje12 ; Mensaje para ingresar el largo
     INT 21H 
 
     CALL SCAN_NUM
-    MOV f2, CX ; Guardar el largo en f2
+    MOV i2, CX ; Guardar el largo en i2
 
 ; Calcular el Área del rectángulo: largo * ancho
-    MOV AX, f1      ; ancho
-    MOV BX, f2      ; largo
+    MOV AX, i1      ; ancho
+    MOV BX, i2      ; largo
     MUL BX          ; ancho * largo
 
     MOV SI, AX      ; Guardar el Area en SI
 
 ; Calcular el perímetro del rectángulo: 2 * (largo + ancho)
-    MOV AX, f1      ; ancho
-    ADD AX, f2      ; ancho + largo
+    MOV AX, i1      ; ancho
+    ADD AX, i2      ; ancho + largo
     MOV BX, 2       ; multiplicador para el perímetro
     MUL BX          ; 2 * (ancho + largo)
 
@@ -371,14 +411,14 @@ rombo:
     INT 21H
 
     CALL SCAN_NUM
-    MOV f1, CX 
+    MOV i1, CX 
 
     MOV AH, 09H
     LEA DX, mensaje15
     INT 21H 
 
     CALL SCAN_NUM
-    MOV f2, CX  
+    MOV i2, CX  
     
     
     MOV AH, 09H
@@ -386,11 +426,11 @@ rombo:
     INT 21H 
 
     CALL SCAN_NUM
-    MOV f3, CX
+    MOV i3, CX
 
 ; Calcular el área del rombo: ((base menor * base mayor) / 2)
-    MOV AX, f1      ; diagonal menor
-    MOV BX, f2      ; diagonal mayor
+    MOV AX, i1      ; diagonal menor
+    MOV BX, i2      ; diagonal mayor
     MUL BX          ; diagonal menor * diagonal mayor
     MOV BX, c       ; 2
     DIV BL          ; (diagonal menor * diagonal mayor) / 2
@@ -399,7 +439,7 @@ rombo:
 
 
 ; Calcular el perímetro del rombo: lado * 4
-    MOV AX, f3      ; lado
+    MOV AX, i3      ; lado
     MOV BX, 4      ; 4
     MUL BX
     MOV DI, AX      ; Guardar el perímetro en DI
@@ -438,18 +478,18 @@ pentagono:
     INT 21H
 
     CALL SCAN_NUM
-    MOV f1, CX 
+    MOV i1, CX 
 
     MOV AH, 09H
     LEA DX, mensaje19
     INT 21H 
 
     CALL SCAN_NUM
-    MOV f2, CX
+    MOV i2, CX
     
     
 ; Calcular el perímetro del pentagono: lado * 5
-    MOV AX, f1      ; lado
+    MOV AX, i1      ; lado
     MOV BX, 5       ; 5
     MUL BX
     MOV DI, AX      ; Guardar el perímetro en DI 
@@ -457,7 +497,7 @@ pentagono:
 
 ; Calcular el área del pentagono: ((perimetro * apotema) / 2)
     MOV BX,AX
-    MOV AX, f2
+    MOV AX, i2
     MUL BX
     MOV BX, 2
     DIV BX
@@ -498,18 +538,18 @@ hexagono:
     INT 21H
 
     CALL SCAN_NUM
-    MOV f1, CX 
+    MOV i1, CX 
 
     MOV AH, 09H
     LEA DX, mensaje22
     INT 21H 
 
     CALL SCAN_NUM
-    MOV f2, CX
+    MOV i2, CX
     
     
 ; Calcular el perímetro del hexagono: lado * 6
-    MOV AX, f1      ; lado
+    MOV AX, i1      ; lado
     MOV BX, 6       ; 6
     MUL BX
     MOV DI, AX      ; Guardar el perímetro en DI 
@@ -517,7 +557,7 @@ hexagono:
 
 ; Calcular el área del hexagono: ((perimetro * apotema) / 2)
     MOV BX,AX
-    MOV AX, f2
+    MOV AX, i2
     MUL BX
     MOV BX, 2
     DIV BX
@@ -558,34 +598,34 @@ paralelogramo:
     INT 21H
 
     CALL SCAN_NUM
-    MOV f1, CX 
+    MOV i1, CX 
 
     MOV AH, 09H
     LEA DX, mensaje25
     INT 21H 
 
     CALL SCAN_NUM
-    MOV f2, CX 
+    MOV i2, CX 
     
     MOV AH, 09H
     LEA DX, mensaje26
     INT 21H 
 
     CALL SCAN_NUM
-    MOV f3, CX
+    MOV i3, CX
     
     
 ; Calcular el perímetro del paralelogramo: base * 2 + lado * 2
-    MOV AX, f1      ; base
-    ADD AX, f2      ; base + lado
+    MOV AX, i1      ; base
+    ADD AX, i2      ; base + lado
     MOV BX, 2       ; multiplicador para el perímetro
     MUL BX
     MOV DI, AX      ; Guardar el perímetro en DI 
      
 
 ; Calcular el área del hexagono: base * altura
-    MOV AX, f1
-    MOV BX, f3
+    MOV AX, i1
+    MOV BX, i3
     MUL BX
     MOV SI, AX      ; Guardar el área en SI
 
@@ -624,17 +664,17 @@ circulo:
     INT 21H
 
     CALL SCAN_NUM
-    MOV f1, CX      ; radio del circulo
+    MOV i1, CX      ; radio del circulo
 
 ; Calcular el área del circulo: pi * radio * radio
-    MOV AX, f1      ; radio
+    MOV AX, i1      ; radio
     MUL AX          ; radio * radio
     MOV BX, 3
     MUL BX
     MOV SI, AX      ; Guardar el área en SI
 
 ; Calcular el perímetro del circulo: 2 * PI * R
-    MOV AX, f1      ; lado
+    MOV AX, i1      ; lado
     MOV BX, 3       ; 4
     MUL BX
     MOV BX, 2
