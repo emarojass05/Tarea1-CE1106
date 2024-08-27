@@ -148,10 +148,10 @@ LF EQU 10
  ; Funcion para leer los inputs del teclado (strings) y obtener su valor numerico   
  SCAN_NUM:
     MOV AH, 0AH        ; Funcion para buffered input
-    LEA DX, buffer     ; Cargar la dirección del buffer
+    LEA DX, buffer     ; Cargar la direcciï¿½n del buffer
     INT 21H      
 
-    LEA SI, [buffer+2] ; Indice al primer caracter del buffer
+    LEA SI, [buffer+2] ; Iï¿½ndice al primer caracter del buffer
     MOV CL, [buffer+1] ; Cantidad de caracteres del input 
 
 NEXT_NUMBER:
@@ -162,7 +162,7 @@ NEXT_NUMBER:
     INC SI             ; Siguiente char
     CMP AL, '.'        ; Leer el punto y comenzar la conversion de la parte fraccional
     JZ  BEGIN_FLOATS
-    SUB AL, '0'        ; ASCII -> Valor numérico
+    SUB AL, '0'        ; ASCII -> Valor numï¿½rico
     XOR AH, AH         ; Limpiar AH
 
     MOV BX, 10         
@@ -246,7 +246,51 @@ CARRY_ADDED:
     MOV ti2, 0
     MOV tf1, 0
     MOV tf2, 0
-    RET 
+    RET
+
+; Multiplicacion de floats ti1 x ti2 + ti2 x tf1 / 100 + ti1 x tf2 / 100 + tf1 x tf2 / 10000    
+FLOAT_MUL:
+    ; ti1 x ti2
+    MOV ti3, 0
+    MOV tf3, 0
+    MOV AX, ti1
+    MUL ti2
+    MOV ti3, AX
+    
+    ; ti2 x tf1
+    MOV AX, ti2
+    MUL tf1
+    MOV BX, 100
+    DIV BX
+    ADD ti3, AX
+    ADD tf3, DX
+    
+    ; ti1 x tf2
+    MOV AX, ti1
+    MUL tf2
+    MOV BX, 100
+    DIV BX
+    ADD ti3, AX
+    ADD tf3, DX
+    
+    ; tf1 x tf2
+    MOV AX, tf1
+    MUL tf2
+    MOV BX, 10000
+    DIV BX
+    ADD tf3, DX
+    CMP tf3, 100
+    JGE ADD_MUL_CARRY ; Verificar si hay carry de la parte flotante
+    
+MUL_CARRY_ADDED:
+    MOV CX, ti3
+    MOV DX, tf3
+    RET
+    
+ADD_MUL_CARRY:
+    SUB tf3, 100
+    INC ti3
+    JMP MUL_CARRY_ADDED
 
 ; Funcion para imprimir el contenido de DX y un espacio
 PRINTLN:
