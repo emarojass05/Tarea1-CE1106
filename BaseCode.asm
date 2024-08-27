@@ -1,3 +1,4 @@
+
 TITLE Area de un trapecio
 INCLUDE 'EMU8086.INC'
 CR EQU 13
@@ -26,8 +27,16 @@ LF EQU 10
        mensaje4 DB cr,lf,'Presiona cualquier tecla para continuar$'
        mensaje5 DB cr,lf,'Presiona 1 si estas activo y 0 para salir.$'
        mensaje6 DB cr,lf,'Ingresa la altura: (presiona enter)$'
-       mensaje10 DB cr,lf,'El area del trapecio es:$'
-       salir DB cr,lf,'Saliendo del programa presione cualquier tecla..$' 
+       mensaje10 DB cr,lf,'El area del trapecio es:$' 
+       mensajePT DB  cr,lf, 'El perimetro del trapecio es: $'
+       mensajeBMT DB cr,lf,'Ingrese el valor de la base menor del Trapecio. $'
+       mensajeBMAT DB cr,lf,'Ingrese el valor de la base mayor del Trapecio$' 
+       mensajeDT DB cr,lf,'Ingrese el valor de la diagonal del Trapecio$'
+       mensajeRPT DB cr,lf,'El perimetro del trapecio es de:$'
+       salir DB cr,lf,'Saliendo del programa presione cualquier tecla..$'
+       
+       
+        
        
        ;Mensajes de Triangulo
        mensaje12 DB cr,lf,'El area del triangulo es:$'
@@ -40,6 +49,7 @@ LF EQU 10
        f1 DW ?
        f2 DW ?
        f3 DW ?
+       f4 DW ?
 
        resultado DB cr,lf,'El area del trapecio es: $'
        resultadoTri DB cr,lf,'El area del triangulo es: $'
@@ -145,7 +155,10 @@ seleccion_calculoT:
     SUB AL,30H 
     
     CMP AL,01H
-    JE multiplica 
+    JE multiplica
+    
+    CMP AL, 02H
+    JE PerimetroT 
     
     JMP inicio
     
@@ -208,6 +221,78 @@ multiplica:
     JMP inicio       ; Regresar al inicio
     
 ;Triangulo funciones
+
+PerimetroT:
+
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+    
+    MOV AH, 09H
+    LEA DX, mensajePT
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+        
+    LEA DX, mensajeBMT
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV f1, CX
+    
+    LEA DX, espa
+    INT 21H
+    
+    
+    LEA DX, mensajeDT
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV f2, CX   
+        
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 09H
+    LEA DX, mensajeBMAT
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV f3, CX   
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 09H
+    LEA DX, mensajeRPT
+    INT 21H
+    
+    ; Multiplicar f2 por 2
+    MOV AX, f2
+    ADD AX, AX   ; AX = f2 * 2
+    
+    ; Sumar f1, f3 y el resultado de f2 * 2
+    ADD AX, f1   ; AX = f1 + (f2 * 2)
+    ADD AX, f3   ; AX = f1 + f3 + (f2 * 2)
+    
+    ; Guardar el resultado final en CX
+    MOV CX, AX   ; CX = AX 
+    
+    CALL PRINT_NUM_UNS
+    
+    LEA DX, espa
+    INT 21H
+    
+    LEA DX, mensaje4
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    JMP inicio
+
+
+    
 
 triangulo:
     MOV AH, 09H
