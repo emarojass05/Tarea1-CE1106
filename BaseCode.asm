@@ -612,19 +612,20 @@ multiplica_Cua:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX  
+    MOV i1, CX
+    
+    LEA DX, mensajeAC
+    CALL PRINT  
     
     MOV AX, i1      ; lado
     MUL AX          ; lado * lado
     MOV SI, AX  
     
-    MOV AH, 09H
-    LEA DX, mensajeAC
-    INT 21H
-    MOV AX, SI
+    
+   
     CALL PRINT_NUM_UNS 
     
-     LEA DX,espa
+     LEA DX,espa            
     INT 21H
 
     LEA DX,mensaje4
@@ -650,19 +651,24 @@ perimetro_Cua:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX  
+    MOV i1, CX
+    
+     
+   
+    LEA DX, mensajePC
+    CALL PRINT
+  
     
     MOV AX, i1      ; lado
     MOV BX, 4       ; 4
     MUL BX          ; 4 * lado
-
-    MOV DI, AX    
     
-    MOV AH, 09H
-    LEA DX, mensajePC
-    INT 21H
-    MOV AX, SI
+    
+
+    
+   
     CALL PRINT_NUM_UNS
+    
     
      LEA DX,espa
     INT 21H
