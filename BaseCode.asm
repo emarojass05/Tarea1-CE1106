@@ -20,7 +20,7 @@ LF EQU 10
         DB '8. Paralelogramo', CR, LF
         DB '9. Hexagono', '$'
 
-       mensajeT DB cr,lf,'Este es el trapecio, presione 1 para pasar a los calculos y 0 para volver al inicio$'
+       mensajeT DB cr,lf,'Este es el trapecio, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
        mensajeC DB cr,lf,'Presione 1 para Area y 2 para perimetro?$'
        mensaje2 DB cr,lf,'Ingresa la base menor: (presiona enter)$'
        mensaje3 DB cr,lf,'Ingresa la base mayor: (presiona enter)$'
@@ -41,21 +41,21 @@ LF EQU 10
        ;Mensajes de Triangulo
        mensaje12 DB cr,lf,'El area del triangulo es:$'
        mensajeCt DB cr,lf,'Presione 1 para Area y 2 para perimetro?$'
-       mensajeTri DB cr,lf,'Este es el triangulo, presione 1 para pasar a los calculos y 0 para volver al inicio$'
+       mensajeTri DB cr,lf,'Este es el triangulo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
        mensaje6Tri DB cr,lf,'Ingresa la altura: (presiona enter)$'
        mensaje2Tri DB cr,lf,'Ingresa el lado del triangulo: (presiona enter)$'
        mensaje123 DB cr,lf,'El perimetro del triangulo es:$'
        
        
        ;Mensajes del Cuadrado
-       mensajeCU DB cr,lf,'Este es el cuadrado, presione 1 para pasar a los calculos y 0 para volver al inicio$'
+       mensajeCU DB cr,lf,'Este es el cuadrado, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
        mensajeCA DB cr,lf,'Area del cuadrado:$' 
        mensajeAC DB cr,lf,'El area del cuadrado es:$'
        mensajeCPE DB cr,lf,'Perimetro del cuadrado:$'
        mensajePC DB cr,lf,'El perimetro del cuadrado es:$'   
        
        ;Mensajes del Rectangulo
-       mensajeR DB cr, lf, 'Este es el rectangulo, presione 1 para pasar a los calculos y 0 para volver al inicio$'
+       mensajeR DB cr, lf, 'Este es el rectangulo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
        mensajeRA DB cr,lf,'Area del rectangulo:$' 
        mensajeAR DB cr,lf,'El area del rectangulo es:$'
        mensajeRP DB cr,lf,'Perimetro del rectangulo:$'
@@ -64,7 +64,7 @@ LF EQU 10
        mensajeANR DB cr,lf,'Ingresa el ancho del rectangulo: (presiona enter)$'
        
        ;Mensajes del Circulo
-       mensajeCirculo DB CR, LF, 'Este es el circulo, presione 1 para pasar a los calculos y 0 para volver al inicio$'
+       mensajeCirculo DB CR, LF, 'Este es el circulo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
        mensajeAreaCirculo DB CR, LF, 'Área del circulo:$' 
        mensajeACirculo DB CR, LF, 'El area del circulo es:$'
        mensajePeriCirculo DB CR, LF, 'Perimetro del circulo:$'
@@ -72,27 +72,27 @@ LF EQU 10
        mensajeRadio DB CR, LF, 'Ingrese el radio del circulo:$'
        
        ; Datos del rombo
-       mensajeRombo DB CR, LF, 'Este es el rombo, presione 1 para pasar a los calculos y 0 para volver al inicio$'
+       mensajeRombo DB CR, LF, 'Este es el rombo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
        mensajeDiag1 DB CR, LF, 'Ingrese la longitud de la diagonal 1: (presione enter)$'
        mensajeDiag2 DB CR, LF, 'Ingrese la longitud de la diagonal 2: (presione enter)$'
        mensajeAreaRombo DB CR, LF, 'El area del rombo es: $'
        mensajePeriRombo DB CR, LF, 'El perimetro del rombo es: $'   
        
        ; Datos del Pentagono
-       mensajePentagono DB CR, LF, 'Este es el pentagono, presione 1 para pasar a los calculos y 0 para volver al inicio$'
+       mensajePentagono DB CR, LF, 'Este es el pentagono, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
        mensajeLadoP DB CR, LF, 'Ingrese la longitud del lado del pentagono: (presione enter)$'
        mensajeAreaP DB CR, LF, 'El area del pentagono es: $'
        mensajePeriP DB CR, LF, 'El perimetro del pentagono es: $'   
        
        ; Datos del Paralelogramo
-       mensajeParalelogramo DB CR, LF, 'Este es el paralelogramo, presione 1 para pasar a los calculos y 0 para volver al inicio$'
+       mensajeParalelogramo DB CR, LF, 'Este es el paralelogramo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
        mensajeBase DB CR, LF, 'Ingrese la longitud de la base del paralelogramo: (presione enter)$'
        mensajeAltura DB CR, LF, 'Ingrese la altura del paralelogramo: (presione enter)$'
        mensajeAreaPar DB CR, LF, 'El area del paralelogramo es: $'
        mensajePeriPar DB CR, LF, 'El perimetro del paralelogramo es: $'
        
        ; Datos del Hexagono
-       mensajeHexagono DB CR, LF, 'Este es el hexagono, presione 1 para pasar a los calculos y 0 para volver al inicio$'
+       mensajeHexagono DB CR, LF, 'Este es el hexagono, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
        mensajeLadoH DB CR, LF, 'Ingrese la longitud del lado del hexagono: (presione enter)$'
        mensajeAreaH DB CR, LF, 'El area del hexagono es: $'
        mensajePeriH DB CR, LF, 'El perimetro del hexagono es: $'
@@ -115,6 +115,14 @@ LF EQU 10
        f6 DW ?
        f7 DW ?
        f8 DW ?
+       
+       ti1 DW ?
+       ti2 DW ?
+       ti3 DW ?
+      
+       tf1 DW ?
+       tf2 DW ?
+       tf3 DW ?
                  
        total_int_input DW ?
        total_float_input DW ?
@@ -135,7 +143,7 @@ LF EQU 10
 ;----------------------------------------------------------------
 .CODE Area
     DEFINE_PRINT_NUM_UNS
-    jmp inicio
+    jmp INICIO
     
  ; Funcion para leer los inputs del teclado (strings) y obtener su valor numerico   
  SCAN_NUM:
@@ -194,8 +202,8 @@ NEXT_FLOAT_NUMBER:
     JMP NEXT_FLOAT_NUMBER     ; Repetir para el siguiente char
     
 END_FLOATS_CONVERSION:
-    CMP total_float_input, 10
-    JL  FILL_FLOAT
+    CMP total_float_input, 10 
+    JL  FILL_FLOAT      ; Si se obtiene un float de una cifra, se multiplica por 10 para que complete los dos espacios para fraccionales
     JMP END_CONVERSION
     
 FILL_FLOAT:
@@ -212,7 +220,33 @@ END_CONVERSION:
     MOV total_float_input, 0 ; Limpiar var.
      
     RET
-
+    
+; Suma de numeros float (ti1 + ti2)[int] + (tf1 + tf2)[float] = ti3[int] + tf3[float]
+FLOAT_ADD:
+    MOV ti3, 0
+    MOV tf3, 0
+    
+    MOV AX, ti1 ; Carga ti1
+    ADD AX, ti2 ; Sumar ti1 + ti2
+    MOV ti3, AX ; Resultado en ti3
+    
+    MOV AX, tf1 ; Carga tf1
+    ADD AX, tf2 ; Sumar tf1 + tf2
+    MOV tf3, AX ; Resultado en tf3
+    CMP tf3, 100; Verificar si hay acarreo
+    JGE INC_INT; Agregar acarreo a la parte entera
+    
+INC_INT:
+    INC ti3
+    SUB tf3, 100
+    JMP CARRY_ADDED
+    
+CARRY_ADDED:
+    MOV ti1, 0
+    MOV ti2, 0
+    MOV tf1, 0
+    MOV tf2, 0
+    RET 
 
 ; Funcion para imprimir el contenido de DX y un espacio
 PRINTLN:
@@ -222,6 +256,7 @@ PRINTLN:
     LEA DX, espa
     INT 21H
     RET
+    
 ; Funcion para crear un nuevo display   
 NEW_SCREEN:
     MOV AH, 00H
@@ -235,7 +270,7 @@ PRINT:
     INT 21H
     RET 
 
-inicio:
+INICIO:
     MOV ax,Data
     MOV DS,AX
 
@@ -266,8 +301,8 @@ inicio:
     CMP AL,01H
     JE seleccion_figura
 
-    ; Si la entrada no es 0 ni 1, volver al inicio
-    JMP inicio
+    ; Si la entrada no es 0 ni 1, volver al INICIO
+    JMP INICIO
 
 seleccion_figura:
     ; Mostrar el mensaje de seleccion de figura
@@ -313,8 +348,8 @@ seleccion_figura:
                
                
 
-    ; Si la entrada no es 1, volver al inicio
-    JMP inicio
+    ; Si la entrada no es 1, volver al INICIO
+    JMP INICIO
 
 ;TRAPECIO 
 trapecio:
@@ -332,7 +367,7 @@ trapecio:
     CMP AL, 01H
     JE seleccion_calculoT
     
-    JMP inicio
+    JMP INICIO
     
 seleccion_calculoT:
     MOV AH, 09H
@@ -352,7 +387,7 @@ seleccion_calculoT:
     CMP AL, 02H
     JE PerimetroT 
     
-    JMP inicio
+    JMP INICIO
     
     
 
@@ -413,7 +448,7 @@ multiplica:
 
     MOV AH,01H
     INT 21H
-    JMP inicio       ; Regresar al inicio
+    JMP INICIO       ; Regresar al INICIO
     
 
 
@@ -485,7 +520,7 @@ PerimetroT:
     
     MOV AH, 01H
     INT 21H
-    JMP inicio
+    JMP INICIO
 
 
     
@@ -505,7 +540,7 @@ triangulo:
     CMP AL, 01H
     JE seleccion_calculoTri
     
-    JMP inicio
+    JMP INICIO
     
 seleccion_calculoTri:
     MOV AH, 09H
@@ -525,7 +560,7 @@ seleccion_calculoTri:
     CMP AL, 02H
     JE perimetro_Tri 
     
-    JMP inicio
+    JMP INICIO
          
 multiplica_tri:
     MOV AH,00H
@@ -574,7 +609,7 @@ multiplica_tri:
 
     MOV AH,01H
     INT 21H
-    JMP inicio       ; Regresar al inicio
+    JMP INICIO       ; Regresar al INICIO
     
 perimetro_Tri:
     MOV AH,00H
@@ -614,7 +649,7 @@ perimetro_Tri:
 
     MOV AH,01H
     INT 21H
-    JMP inicio       ; Regresar al inicio
+    JMP INICIO       ; Regresar al INICIO
     
     
 
@@ -636,7 +671,7 @@ cuadrado:
     CMP AL, 01H
     JE seleccion_calculoC
     
-    JMP inicio
+    JMP INICIO
     
 seleccion_calculoC:
     MOV AH, 09H
@@ -656,7 +691,7 @@ seleccion_calculoC:
     CMP AL, 02H
     JE perimetro_Cua 
     
-    JMP inicio
+    JMP INICIO
     
     
 multiplica_Cua:
@@ -695,7 +730,7 @@ multiplica_Cua:
 
     MOV AH,01H
     INT 21H
-    JMP inicio 
+    JMP INICIO 
     
 perimetro_Cua:
     MOV AH, 00H
@@ -735,7 +770,7 @@ perimetro_Cua:
 
     MOV AH,01H
     INT 21H
-    JMP inicio
+    JMP INICIO
     
 Rectangulo:
     MOV AH, 09H
@@ -771,7 +806,7 @@ seleccion_calculoR:
     JE perimetro_Rec 
     
     
-    JMP inicio
+    JMP INICIO
   
 multiplica_Rec:
     MOV AH, 00H
@@ -820,7 +855,7 @@ multiplica_Rec:
 
     MOV AH,01H
     INT 21H
-    JMP inicio
+    JMP INICIO
     
 perimetro_Rec:
     MOV AH, 00H
@@ -870,7 +905,7 @@ perimetro_Rec:
 
     MOV AH,01H
     INT 21H
-    JMP inicio         
+    JMP INICIO         
 
 ; CIRCULO
 
@@ -893,7 +928,7 @@ circulo:
     CMP AL, 01H
     JE seleccion_calculoCirculo
     
-    JMP inicio
+    JMP INICIO
 
 seleccion_calculoCirculo:
     MOV AH, 09H
@@ -913,7 +948,7 @@ seleccion_calculoCirculo:
     CMP AL, 02H
     JE calcular_perimetroCirculo 
     
-    JMP inicio
+    JMP INICIO
 
 calcular_areaCirculo:
     MOV AH, 00H
@@ -954,7 +989,7 @@ calcular_areaCirculo:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio 
+    JMP INICIO 
 
 calcular_perimetroCirculo:
     MOV AH, 00H
@@ -996,7 +1031,7 @@ calcular_perimetroCirculo:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio
+    JMP INICIO
 
 ; Codigo del rombo
 rombo:
@@ -1014,7 +1049,7 @@ rombo:
     CMP AL, 01H
     JE seleccion_calculoRombo
     
-    JMP inicio
+    JMP INICIO
 
 seleccion_calculoRombo:
     MOV AH, 09H
@@ -1034,7 +1069,7 @@ seleccion_calculoRombo:
     CMP AL, 02H
     JE calcular_perimetroRombo 
     
-    JMP inicio
+    JMP INICIO
 
 calcular_areaRombo:
     MOV AH, 00H
@@ -1082,7 +1117,7 @@ calcular_areaRombo:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio
+    JMP INICIO
 
 calcular_perimetroRombo:
     MOV AH, 00H
@@ -1130,7 +1165,7 @@ calcular_perimetroRombo:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio
+    JMP INICIO
 
 ; Codigo del Pentagono
 pentagono:
@@ -1148,7 +1183,7 @@ pentagono:
     CMP AL, 01H
     JE seleccion_calculoPentagono
     
-    JMP inicio
+    JMP INICIO
 
 seleccion_calculoPentagono:
     MOV AH, 09H
@@ -1168,7 +1203,7 @@ seleccion_calculoPentagono:
     CMP AL, 02H
     JE calcular_perimetroPentagono 
     
-    JMP inicio
+    JMP INICIO
 
 calcular_areaPentagono:
     MOV AH, 00H
@@ -1206,7 +1241,7 @@ calcular_areaPentagono:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio
+    JMP INICIO
 
 calcular_perimetroPentagono:
     MOV AH, 00H
@@ -1243,7 +1278,7 @@ calcular_perimetroPentagono:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio    
+    JMP INICIO    
     
 ; Codigo del Paralelogramo
 paralelogramo:
@@ -1261,7 +1296,7 @@ paralelogramo:
     CMP AL, 01H
     JE seleccion_calculoParalelogramo
     
-    JMP inicio
+    JMP INICIO
 
 seleccion_calculoParalelogramo:
     MOV AH, 09H
@@ -1281,7 +1316,7 @@ seleccion_calculoParalelogramo:
     CMP AL, 02H
     JE calcular_perimetroParalelogramo 
     
-    JMP inicio
+    JMP INICIO
 
 calcular_areaParalelogramo:
     MOV AH, 00H
@@ -1327,7 +1362,7 @@ calcular_areaParalelogramo:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio
+    JMP INICIO
 
 calcular_perimetroParalelogramo:
     MOV AH, 00H
@@ -1375,7 +1410,7 @@ calcular_perimetroParalelogramo:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio         
+    JMP INICIO         
    
     ; Codigo del Hexagono
 hexagono:
@@ -1393,7 +1428,7 @@ hexagono:
     CMP AL, 01H
     JE seleccion_calculoHexagono
     
-    JMP inicio
+    JMP INICIO
 
 seleccion_calculoHexagono:
     MOV AH, 09H
@@ -1413,7 +1448,7 @@ seleccion_calculoHexagono:
     CMP AL, 02H
     JE calcular_perimetroHexagono 
     
-    JMP inicio
+    JMP INICIO
 
 calcular_areaHexagono:
     MOV AH, 00H
@@ -1451,7 +1486,7 @@ calcular_areaHexagono:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio
+    JMP INICIO
 
 calcular_perimetroHexagono:
     MOV AH, 00H
@@ -1488,7 +1523,7 @@ calcular_perimetroHexagono:
 
     MOV AH, 01H
     INT 21H
-    JMP inicio
+    JMP INICIO
 
 fin:
     MOV AH,09H
