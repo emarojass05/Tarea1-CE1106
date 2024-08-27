@@ -60,10 +60,45 @@ LF EQU 10
        mensajeAR DB cr,lf,'El area del rectangulo es:$'
        mensajeRP DB cr,lf,'Perimetro del rectangulo:$'
        mensajePR DB cr,lf,'El perimetro del rectangulo es:$'  
-       mensajeLR DB cr,lf,'Ingresa la el largo del rectangulo: (presiona enter)$'
+       mensajeLR DB cr,lf,'Ingresa el largo del rectangulo: (presiona enter)$'
        mensajeANR DB cr,lf,'Ingresa el ancho del rectangulo: (presiona enter)$'
+       
+       ;Mensajes del Círculo
+       mensajeCirculo DB CR, LF, 'Este es el círculo, presione 1 para pasar a los cálculos y 0 para volver al inicio$'
+       mensajeAreaCirculo DB CR, LF, 'Área del círculo:$' 
+       mensajeACirculo DB CR, LF, 'El área del círculo es:$'
+       mensajePeriCirculo DB CR, LF, 'Perímetro del círculo:$'
+       mensajePCirculo DB CR, LF, 'El perímetro del círculo es:$' 
+       mensajeRadio DB CR, LF, 'Ingrese el radio del circulo:$'
+       
+       ; Datos del rombo
+       mensajeRombo DB CR, LF, 'Este es el rombo, presione 1 para pasar a los cálculos y 0 para volver al inicio$'
+       mensajeDiag1 DB CR, LF, 'Ingrese la longitud de la diagonal 1: (presione enter)$'
+       mensajeDiag2 DB CR, LF, 'Ingrese la longitud de la diagonal 2: (presione enter)$'
+       mensajeAreaRombo DB CR, LF, 'El área del rombo es: $'
+       mensajePeriRombo DB CR, LF, 'El perímetro del rombo es: $'   
+       
+       ; Datos del Pentagono
+       mensajePentagono DB CR, LF, 'Este es el pentagono, presione 1 para pasar a los cálculos y 0 para volver al inicio$'
+       mensajeLadoP DB CR, LF, 'Ingrese la longitud del lado del pentágono: (presione enter)$'
+       mensajeAreaP DB CR, LF, 'El área del pentágono es: $'
+       mensajePeriP DB CR, LF, 'El perímetro del pentágono es: $'   
+       
+       ; Datos del Paralelogramo
+       mensajeParalelogramo DB CR, LF, 'Este es el paralelogramo, presione 1 para pasar a los cálculos y 0 para volver al inicio$'
+       mensajeBase DB CR, LF, 'Ingrese la longitud de la base del paralelogramo: (presione enter)$'
+       mensajeAltura DB CR, LF, 'Ingrese la altura del paralelogramo: (presione enter)$'
+       mensajeAreaPar DB CR, LF, 'El área del paralelogramo es: $'
+       mensajePeriPar DB CR, LF, 'El perímetro del paralelogramo es: $'
+       
+       ; Datos del Hexágono
+       mensajeHexagono DB CR, LF, 'Este es el hexágono, presione 1 para pasar a los cálculos y 0 para volver al inicio$'
+       mensajeLadoH DB CR, LF, 'Ingrese la longitud del lado del hexágono: (presione enter)$'
+       mensajeAreaH DB CR, LF, 'El área del hexágono es: $'
+       mensajePeriH DB CR, LF, 'El perímetro del hexágono es: $'
 
-            i1 DW ?
+       
+       i1 DW ?
        i2 DW ?
        i3 DW ?
        i4 DW ?
@@ -248,7 +283,22 @@ seleccion_figura:
     CMP AL, 04H
     JE RECTANGULO
     
-   
+    CMP AL,5H
+    JE CIRCULO
+    
+    CMP AL,6H
+    JE ROMBO
+               
+    CMP AL,7H
+    JE PENTAGONO
+    
+    CMP AL,8H
+    JE PARALELOGRAMO
+    
+    CMP AL,9H
+    JE HEXAGONO           
+               
+               
 
     ; Si la entrada no es 1, volver al inicio
     JMP inicio
@@ -807,7 +857,626 @@ perimetro_Rec:
 
     MOV AH,01H
     INT 21H
-    JMP inicio      
+    JMP inicio         
+
+; CIRCULO
+
+circulo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeCirculo
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H
+    
+    CMP AL, 01H
+    JE seleccion_calculoCirculo
+    
+    JMP inicio
+
+seleccion_calculoCirculo:
+    MOV AH, 09H
+    LEA DX, mensajeCt
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H 
+    
+    CMP AL, 01H
+    JE calcular_areaCirculo
+    
+    CMP AL, 02H
+    JE calcular_perimetroCirculo 
+    
+    JMP inicio
+
+calcular_areaCirculo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeAreaCirculo
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H                      
+    
+    LEA DX, mensajeRadio
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; radio del círculo
+
+    ; Calcular el Area del circulo: PI * radio * radio
+    MOV AX, i1      ; radio
+    MUL AX          ; radio * radio
+    MOV BX, 3
+    MUL BX     ; 3 * (radio * radio)
+    MOV SI, AX      ; Guardar el área en SI
+
+    MOV AH, 09H
+    LEA DX, mensajeACirculo
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS 
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio 
+
+calcular_perimetroCirculo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajePeriCirculo
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    LEA DX, mensajeRadio
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; radio del círculo
+    
+    ; Calcular el perímetro del círculo: 2 * PI * radio
+    MOV AX, i1      ; radio
+    MOV BX, 2
+    MUL BX     ; 2 * radio
+    MOV BX, 3
+    MUL BX     ; 3 * (2 * radio)
+    MOV DI, AX      ; Guardar el perímetro en DI
+
+    MOV AH, 09H
+    LEA DX, mensajePCirculo
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio
+
+; Código del rombo
+rombo:
+    MOV AH, 09H
+    LEA DX, mensajeRombo    
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H
+    
+    CMP AL, 01H
+    JE seleccion_calculoRombo
+    
+    JMP inicio
+
+seleccion_calculoRombo:
+    MOV AH, 09H
+    LEA DX, mensajeCt
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H 
+    
+    CMP AL, 01H
+    JE calcular_areaRombo
+    
+    CMP AL, 02H
+    JE calcular_perimetroRombo 
+    
+    JMP inicio
+
+calcular_areaRombo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeDiag1
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; Diagonal 1
+    
+    MOV AH, 09H
+    LEA DX, mensajeDiag2
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i2, CX      ; Diagonal 2
+
+    ; Cálculo del área: (Diagonal 1 * Diagonal 2) / 2
+    MOV AX, i1
+    MUL i2          ; Diagonal 1 * Diagonal 2
+    MOV BX, 2
+    DIV BX          ; (Diagonal 1 * Diagonal 2) / 2
+    MOV SI, AX      ; Guardar el área en SI
+
+    MOV AH, 09H
+    LEA DX, mensajeAreaRombo
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS 
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio
+
+calcular_perimetroRombo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeDiag1
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; Diagonal 1
+    
+    MOV AH, 09H
+    LEA DX, mensajeDiag2
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i2, CX      ; Diagonal 2
+
+    ; Cálculo del perímetro: 2 * (Diagonal 1 + Diagonal 2)
+    MOV AX, i1
+    ADD AX, i2      ; Diagonal 1 + Diagonal 2
+    MOV BX, 2
+    MUL BX          ; 2 * (Diagonal 1 + Diagonal 2)
+    MOV DI, AX      ; Guardar el perímetro en DI
+
+    MOV AH, 09H
+    LEA DX, mensajePeriRombo
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio
+
+; Código del Pentágono
+pentagono:
+    MOV AH, 09H
+    LEA DX, mensajePentagono    
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H
+    
+    CMP AL, 01H
+    JE seleccion_calculoPentagono
+    
+    JMP inicio
+
+seleccion_calculoPentagono:
+    MOV AH, 09H
+    LEA DX, mensajeCt
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H 
+    
+    CMP AL, 01H
+    JE calcular_areaPentagono
+    
+    CMP AL, 02H
+    JE calcular_perimetroPentagono 
+    
+    JMP inicio
+
+calcular_areaPentagono:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeLadoP
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; Lado del pentágono
+    
+    ; Cálculo del área: (sqrt(5 * (5 + 2 * sqrt(5))) / 4) * lado^2
+    MOV AX, i1
+    MUL AX          ; Lado^2
+    MOV BX, 172     ; Aproximación de (sqrt(5 * (5 + 2 * sqrt(5))) / 4)
+    DIV BX          ; (lado^2 * 172) / 4
+    MOV SI, AX      ; Guardar el área en SI
+
+    MOV AH, 09H
+    LEA DX, mensajeAreaP
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS 
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio
+
+calcular_perimetroPentagono:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeLadoP
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; Lado del pentágono
+
+    ; Cálculo del perímetro: 5 * lado
+    MOV AX, i1
+    MOV BX, 5
+    MUL BX          ; 5 * lado
+    MOV DI, AX      ; Guardar el perímetro en DI
+
+    MOV AH, 09H
+    LEA DX, mensajePeriP
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio    
+    
+; Código del Paralelogramo
+paralelogramo:
+    MOV AH, 09H
+    LEA DX, mensajeParalelogramo    
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H
+    
+    CMP AL, 01H
+    JE seleccion_calculoParalelogramo
+    
+    JMP inicio
+
+seleccion_calculoParalelogramo:
+    MOV AH, 09H
+    LEA DX, mensajeCt
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H 
+    
+    CMP AL, 01H
+    JE calcular_areaParalelogramo
+    
+    CMP AL, 02H
+    JE calcular_perimetroParalelogramo 
+    
+    JMP inicio
+
+calcular_areaParalelogramo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeBase
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; Base del paralelogramo
+    
+    MOV AH, 09H
+    LEA DX, mensajeAltura
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i2, CX      ; Altura del paralelogramo
+
+    ; Cálculo del área: base * altura
+    MOV AX, i1
+    MUL i2          ; base * altura
+    MOV SI, AX      ; Guardar el área en SI
+
+    MOV AH, 09H
+    LEA DX, mensajeAreaPar
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS 
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio
+
+calcular_perimetroParalelogramo:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeBase
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; Base del paralelogramo
+    
+    MOV AH, 09H
+    LEA DX, mensajeAltura
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i2, CX      ; Altura del paralelogramo
+
+    ; Cálculo del perímetro: 2 * (base + altura)
+    MOV AX, i1
+    ADD AX, i2      ; base + altura
+    MOV BX, 2
+    MUL BX          ; 2 * (base + altura)
+    MOV DI, AX      ; Guardar el perímetro en DI
+
+    MOV AH, 09H
+    LEA DX, mensajePeriPar
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio         
+   
+    ; Código del Hexágono
+hexagono:
+    MOV AH, 09H
+    LEA DX, mensajeHexagono    
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H
+    
+    CMP AL, 01H
+    JE seleccion_calculoHexagono
+    
+    JMP inicio
+
+seleccion_calculoHexagono:
+    MOV AH, 09H
+    LEA DX, mensajeCt
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    MOV AH, 01H
+    INT 21H
+    SUB AL, 30H 
+    
+    CMP AL, 01H
+    JE calcular_areaHexagono
+    
+    CMP AL, 02H
+    JE calcular_perimetroHexagono 
+    
+    JMP inicio
+
+calcular_areaHexagono:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeLadoH
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; Lado del hexágono
+    
+    ; Cálculo del área: ((3 * sqrt(3)) / 2) * lado^2
+    MOV AX, i1
+    MUL AX          ; Lado^2
+    MOV BX, 155     ; Aproximación de ((3 * sqrt(3)) / 2)
+    DIV BX          ; (lado^2 * 155) / 2
+    MOV SI, AX      ; Guardar el área en SI
+
+    MOV AH, 09H
+    LEA DX, mensajeAreaH
+    INT 21H
+    MOV AX, SI
+    CALL PRINT_NUM_UNS 
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio
+
+calcular_perimetroHexagono:
+    MOV AH, 00H
+    MOV AL, 03H
+    INT 10H
+
+    MOV AH, 09H
+    LEA DX, mensajeLadoH
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H
+    
+    CALL SCAN_NUM
+    MOV i1, CX      ; Lado del hexágono
+
+    ; Cálculo del perímetro: 6 * lado
+    MOV AX, i1
+    MOV BX, 6
+    MUL BX          ; 6 * lado
+    MOV DI, AX      ; Guardar el perímetro en DI
+
+    MOV AH, 09H
+    LEA DX, mensajePeriH
+    INT 21H
+    MOV AX, DI
+    CALL PRINT_NUM_UNS
+    
+    LEA DX, espa
+    INT 21H
+
+    LEA DX, mensaje4
+    INT 21H
+
+    MOV AH, 01H
+    INT 21H
+    JMP inicio
+
 fin:
     MOV AH,09H
     LEA DX,salir
