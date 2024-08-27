@@ -751,7 +751,6 @@ perimetro_Cua:
     CALL SCAN_NUM
     MOV i1, CX
     
-<<<<<<< HEAD
      
    
     LEA DX, mensajePC
@@ -765,17 +764,6 @@ perimetro_Cua:
     
 
     
-   
-=======
-    LEA DX, mensajePC  
-    CALL PRINT
-    
-    MOV AX, i1      ; lado
-    MOV BX, 4       ; 4
-    MUL BX          ; 4 * lado    
-    
-    
->>>>>>> e4e119f6646ba1a626c791fdbbe13c57174c429d
     CALL PRINT_NUM_UNS
     
     
