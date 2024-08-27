@@ -748,18 +748,16 @@ perimetro_Cua:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX  
+    MOV i1, CX
+    
+    LEA DX, mensajePC  
+    CALL PRINT
     
     MOV AX, i1      ; lado
     MOV BX, 4       ; 4
-    MUL BX          ; 4 * lado
-
-    MOV DI, AX    
+    MUL BX          ; 4 * lado    
     
-    MOV AH, 09H
-    LEA DX, mensajePC
-    INT 21H
-    MOV AX, SI
+    
     CALL PRINT_NUM_UNS
     
      LEA DX,espa
