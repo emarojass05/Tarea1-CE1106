@@ -144,7 +144,15 @@ LF EQU 10
 .CODE Area
     DEFINE_PRINT_NUM_UNS
     jmp INICIO
-    
+ 
+ 
+ ;Funcion para imprimir un caracter desde DL    
+PRINT_CHAR:
+    MOV AH, 02H
+	INT 21H
+	RET
+	
+	   
  ; Funcion para leer los inputs del teclado (strings) y obtener su valor numerico   
  SCAN_NUM:
     MOV AH, 0AH        ; Funcion para buffered input
@@ -282,6 +290,7 @@ FLOAT_MUL:
     CMP tf3, 100
     JGE ADD_MUL_CARRY ; Verificar si hay carry de la parte flotante
     
+    
 MUL_CARRY_ADDED:
     MOV CX, ti3
     MOV DX, tf3
@@ -290,7 +299,21 @@ MUL_CARRY_ADDED:
 ADD_MUL_CARRY:
     SUB tf3, 100
     INC ti3
-    JMP MUL_CARRY_ADDED
+    JMP MUL_CARRY_ADDED 
+    
+    
+    
+PRINT_FLOAT_NUM:    
+    ; Imprimir parte entera
+    MOV AX, ti3
+    CALL PRINT_NUM_UNS
+    ; Imprimir punto
+    MOV DL, 46
+    CALL PRINT_CHAR
+    ; Imprimir parte fraccional
+    MOV AX, tf3
+    CALL PRINT_NUM_UNS
+    RET
 
 ; Funcion para imprimir el contenido de DX y un espacio
 PRINTLN:
@@ -451,7 +474,8 @@ multiplica:
     INT 21H
 
     CALL SCAN_NUM
-    MOV i1,CX 
+    MOV i1,CX
+    MOV f1, DX 
 
     MOV AH,09H
     LEA DX,mensaje3
@@ -459,13 +483,16 @@ multiplica:
 
     CALL SCAN_NUM
     MOV i2,CX
-
+    MOV f2, DX
+    
+    
     MOV AH,09H
-    LEA DX,mensaje6Tri
+    LEA DX,mensaje6
     INT 21H 
 
     CALL SCAN_NUM
     MOV i3,CX
+    MOV f3, DX
 
     MOV AH,09H
     LEA DX,resultado
@@ -474,15 +501,39 @@ multiplica:
     LEA DX, espa
     CALL PRINT
 
-    MOV AX,i1        ; base menor
-    ADD AX,i2        ; base menor + base mayor
+    MOV AX,i1
+    MOV DX, f1        
+    MOV ti1, AX
+    MOV tf1, DX
+    
+    MOV AX,i2
+    MOV DX, f2        
+    MOV ti2, AX
+    MOV tf2, DX
+    
+    
+    
+    CALL FLOAT_ADD ; base menor + base mayor
+    
+    MOV AX, ti3       
     MOV BX,c         ; 2
-    DIV BL           ; (base menor + base mayor) / 2
-    MOV BX,i3        ; altura
-    MUL BX           ; ((base menor + base mayor) / 2) * altura
+    DIV BX           ; (base menor + base mayor) / 2
+    MOV ti1,AX
+    
+    MOV AX, tf3       
+    MOV BX,c         ; 2
+    DIV BX           ; (base menor + base mayor) / 2
+    MOV tf1,AX       ; altura
+    
+    MOV CX, i3
+    MOV DX, f3
+    
+    MOV ti2, CX
+    MOV tf2, DX
+     
+    CALL FLOAT_MUL         ; ((base menor + base mayor) / 2) * altura
 
-    MOV CX,AX        ; Guardar el resultado en CX
-    CALL PRINT_NUM_UNS ; Imprimir el numero
+    CALL PRINT_FLOAT_NUM ; Imprimir el numero
 
     LEA DX,espa
     INT 21H
@@ -754,18 +805,18 @@ multiplica_Cua:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX
+    MOV ti1, CX
+    MOV tf1, DX
+    MOV ti2, CX
+    MOV tf2, DX
     
     LEA DX, mensajeAC
     CALL PRINT  
     
-    MOV AX, i1      ; lado
-    MUL AX          ; lado * lado
-    MOV SI, AX  
-    
+    CALL FLOAT_MUL  
     
    
-    CALL PRINT_NUM_UNS 
+    CALL PRINT_FLOAT_NUM
     
      LEA DX,espa            
     INT 21H
@@ -793,7 +844,10 @@ perimetro_Cua:
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX
+    MOV ti1, CX
+    MOV tf1,DX
+    MOV ti2,4
+    MOV tf2,0 
     
      
    
@@ -801,14 +855,10 @@ perimetro_Cua:
     CALL PRINT
   
     
-    MOV AX, i1      ; lado
-    MOV BX, 4       ; 4
-    MUL BX          ; 4 * lado
-    
-    
+    CALL FLOAT_MUL
 
     
-    CALL PRINT_NUM_UNS
+    CALL PRINT_FLOAT_NUM
     
     
      LEA DX,espa
