@@ -707,34 +707,36 @@ multiplica_tri:
     JMP INICIO       ; Regresar al INICIO
     
 perimetro_Tri:
-    MOV AH,00H
-    MOV AL,03H
+    MOV AH, 00H
+    MOV AL, 03H
     INT 10H
 
-    MOV AH,09H
-    LEA DX,mensaje123
-    INT 21H  
-
-    LEA DX,espa
+    MOV AH, 09H
+    LEA DX, mensajeCPE
     INT 21H
-
-    LEA DX,mensaje2Tri
+    
+    LEA DX, espa
     INT 21H
-
+    
+    LEA DX,mensaje2
+    INT 21H
+    
     CALL SCAN_NUM
-    MOV i1,CX 
+    MOV ti1, CX
+    MOV tf1,DX
+    MOV ti2,3
+    MOV tf2,0 
+    
+     
+   
+    LEA DX, mensajePC
+    CALL PRINT
+  
+    
+    CALL FLOAT_MUL
 
-    MOV AH,09H
-    LEA DX,resultadoTriP
-    INT 21H
-
-    MOV AX,i1        ;largo
-    MOV BX,a         ; 3
-    MUL BX           
-
-
-    MOV CX,AX        ; Guardar el resultado en CX
-    CALL PRINT_NUM_UNS ; Imprimir el numero
+    
+    CALL PRINT_FLOAT_NUM
 
     LEA DX,espa
     INT 21H
@@ -861,7 +863,7 @@ perimetro_Cua:
     CALL PRINT_FLOAT_NUM
     
     
-     LEA DX,espa
+    LEA DX,espa
     INT 21H
 
     LEA DX,mensaje4
@@ -917,36 +919,34 @@ multiplica_Rec:
     INT 21H
     
     LEA DX, espa
-    INT 21H                      
+    INT 21H  
     
-      LEA DX,mensajeLR
-    INT 21H
-    
+    MOV AH, 09H                    
+    LEA DX,mensajeLR
+    INT 21H    
     CALL SCAN_NUM
-    MOV i1, CX 
+    MOV ti1, CX
+    MOV tf1, DX 
     
-    LEA DX, espa
-    CALL PRINT
-    
-    LEA DX, mensajeANR
-    INT 21H
-    
-    CALL SCAN_NUM
-    MOV i2, CX   
-    
-    MOV AX, i1      ; ancho
-    MOV BX, i2      ; largo
-    MUL BX          ; ancho * largo
 
-    MOV SI, AX      ; Guardar el Area en SI  
-    
     MOV AH, 09H
-    LEA DX, mensajeAR
-    INT 21H
-    MOV AX, SI
-    CALL PRINT_NUM_UNS 
+    LEA DX,mensajeANR
+    INT 21H    
+    CALL SCAN_NUM 
+    MOV ti2, CX
+    MOV tf2, DX
+    CALL FLOAT_MUL 
     
-     LEA DX,espa
+    
+    
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+    
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
     LEA DX,mensaje4
@@ -954,49 +954,51 @@ multiplica_Rec:
 
     MOV AH,01H
     INT 21H
-    JMP INICIO
+    JMP inicio
     
 perimetro_Rec:
-    MOV AH, 00H
+       MOV AH, 00H
     MOV AL, 03H
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensajeRP
+    LEA DX, mensajeRA
     INT 21H
     
     LEA DX, espa
-    INT 21H                      
+    INT 21H  
     
+    MOV AH, 09H                    
     LEA DX,mensajeLR
-    INT 21H
-    
+    INT 21H    
     CALL SCAN_NUM
-    MOV i1, CX 
+    MOV ti1, CX
+    MOV tf1, DX
     
-    LEA DX, espa
-    CALL PRINT
     
-    LEA DX, mensajeANR
-    INT 21H
-    
-    CALL SCAN_NUM
-    MOV i2, CX 
-    
-    MOV AX, i1      ; ancho
-    ADD AX, i2      ; ancho + largo
-    MOV BX, 2       ; multiplicador para el perimetro
-    MUL BX          ; 2 * (ancho + largo)
-
-    MOV DI, AX      ; Guardar el perimetro en DI
     
     MOV AH, 09H
-    LEA DX, mensajePR
-    INT 21H
-    MOV AX, DI
-    CALL PRINT_NUM_UNS 
+    LEA DX,mensajeANR
+    INT 21H    
+    CALL SCAN_NUM 
+    MOV ti2, CX
+    MOV tf2, DX 
+    CALL FLOAT_ADD
+    MOV ti1, CX
+    MOV tf1, DX
+    CALL FLOAT_MUL
+
     
-     LEA DX,espa
+    
+    
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+    
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
     LEA DX,mensaje4
@@ -1004,7 +1006,7 @@ perimetro_Rec:
 
     MOV AH,01H
     INT 21H
-    JMP INICIO         
+    JMP inicio     
 
 ; CIRCULO
 
@@ -1219,52 +1221,47 @@ calcular_areaRombo:
     JMP INICIO
 
 calcular_perimetroRombo:
-    MOV AH, 00H
+     MOV AH, 00H
     MOV AL, 03H
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensajeDiag1
+    LEA DX, mensajeCPE
     INT 21H
     
     LEA DX, espa
+    INT 21H
+    
+    LEA DX,mensaje2
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX      ; Diagonal 1
+    MOV ti1, CX
+    MOV tf1,DX
+    MOV ti2,4
+    MOV tf2,0 
     
-    MOV AH, 09H
-    LEA DX, mensajeDiag2
-    INT 21H
+     
+   
+    LEA DX, mensajePC
+    CALL PRINT
+  
     
-    LEA DX, espa
-    INT 21H
-    
-    CALL SCAN_NUM
-    MOV i2, CX      ; Diagonal 2
+    CALL FLOAT_MUL
 
-    ; Calculo del perimetro: 2 * (Diagonal 1 + Diagonal 2)
-    MOV AX, i1
-    ADD AX, i2      ; Diagonal 1 + Diagonal 2
-    MOV BX, 2
-    MUL BX          ; 2 * (Diagonal 1 + Diagonal 2)
-    MOV DI, AX      ; Guardar el perimetro en DI
-
-    MOV AH, 09H
-    LEA DX, mensajePeriRombo
-    INT 21H
-    MOV AX, DI
-    CALL PRINT_NUM_UNS
     
-    LEA DX, espa
+    CALL PRINT_FLOAT_NUM
+    
+    
+    LEA DX,espa
     INT 21H
 
-    LEA DX, mensaje4
+    LEA DX,mensaje4
     INT 21H
 
-    MOV AH, 01H
+    MOV AH,01H
     INT 21H
-    JMP INICIO
+    JMP inicio
 
 ; Codigo del Pentagono
 pentagono:
@@ -1343,41 +1340,47 @@ calcular_areaPentagono:
     JMP INICIO
 
 calcular_perimetroPentagono:
-    MOV AH, 00H
+     MOV AH, 00H
     MOV AL, 03H
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensajeLadoP
+    LEA DX, mensajeCPE
     INT 21H
     
     LEA DX, espa
+    INT 21H
+    
+    LEA DX,mensaje2
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX      ; Lado del pentagono
-
-    ; Calculo del perimetro: 5 * lado
-    MOV AX, i1
-    MOV BX, 5
-    MUL BX          ; 5 * lado
-    MOV DI, AX      ; Guardar el perimetro en DI
-
-    MOV AH, 09H
-    LEA DX, mensajePeriP
-    INT 21H
-    MOV AX, DI
-    CALL PRINT_NUM_UNS
+    MOV ti1, CX
+    MOV tf1,DX
+    MOV ti2,5
+    MOV tf2,0 
     
-    LEA DX, espa
+     
+   
+    LEA DX, mensajePC
+    CALL PRINT
+  
+    
+    CALL FLOAT_MUL
+
+    
+    CALL PRINT_FLOAT_NUM
+    
+    
+    LEA DX,espa
     INT 21H
 
-    LEA DX, mensaje4
+    LEA DX,mensaje4
     INT 21H
 
-    MOV AH, 01H
+    MOV AH,01H
     INT 21H
-    JMP INICIO    
+    JMP inicio   
     
 ; Codigo del Paralelogramo
 paralelogramo:
@@ -1423,45 +1426,46 @@ calcular_areaParalelogramo:
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensajeBase
+    LEA DX, mensajeRA
     INT 21H
     
     LEA DX, espa
-    INT 21H
+    INT 21H  
     
+    MOV AH, 09H                    
+    LEA DX,mensajeLR
+    INT 21H    
     CALL SCAN_NUM
-    MOV i1, CX      ; Base del paralelogramo
-    
-    MOV AH, 09H
-    LEA DX, mensajeAltura
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H
-    
-    CALL SCAN_NUM
-    MOV i2, CX      ; Altura del paralelogramo
-
-    ; Calculo del area: base * altura
-    MOV AX, i1
-    MUL i2          ; base * altura
-    MOV SI, AX      ; Guardar el area en SI
+    MOV ti1, CX
+    MOV tf1, DX 
+    CALL FLOAT_MUL
 
     MOV AH, 09H
-    LEA DX, mensajeAreaPar
-    INT 21H
-    MOV AX, SI
-    CALL PRINT_NUM_UNS 
+    LEA DX,mensajeANR
+    INT 21H    
+    CALL SCAN_NUM 
+    MOV ti2, CX
+    MOV tf2, DX
+    CALL FLOAT_MUL
     
-    LEA DX, espa
+    
+    
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+    
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
-    LEA DX, mensaje4
+    LEA DX,mensaje4
     INT 21H
 
-    MOV AH, 01H
+    MOV AH,01H
     INT 21H
-    JMP INICIO
+    JMP inicio
 
 calcular_perimetroParalelogramo:
     MOV AH, 00H
@@ -1588,42 +1592,47 @@ calcular_areaHexagono:
     JMP INICIO
 
 calcular_perimetroHexagono:
-    MOV AH, 00H
+     MOV AH, 00H
     MOV AL, 03H
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensajeLadoH
+    LEA DX, mensajeCPE
     INT 21H
     
     LEA DX, espa
+    INT 21H
+    
+    LEA DX,mensaje2
     INT 21H
     
     CALL SCAN_NUM
-    MOV i1, CX      ; Lado del hexagono
-
-    ; Calculo del perimetro: 6 * lado
-    MOV AX, i1
-    MOV BX, 6
-    MUL BX          ; 6 * lado
-    MOV DI, AX      ; Guardar el perimetro en DI
-
-    MOV AH, 09H
-    LEA DX, mensajePeriH
-    INT 21H
-    MOV AX, DI
-    CALL PRINT_NUM_UNS
+    MOV ti1, CX
+    MOV tf1,DX
+    MOV ti2,6
+    MOV tf2,0 
     
-    LEA DX, espa
+     
+   
+    LEA DX, mensajePC
+    CALL PRINT
+  
+    
+    CALL FLOAT_MUL
+
+    
+    CALL PRINT_FLOAT_NUM
+    
+    
+    LEA DX,espa
     INT 21H
 
-    LEA DX, mensaje4
+    LEA DX,mensaje4
     INT 21H
 
-    MOV AH, 01H
+    MOV AH,01H
     INT 21H
-    JMP INICIO
-
+    JMP inicio
 fin:
     MOV AH,09H
     LEA DX,salir
