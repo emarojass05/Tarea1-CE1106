@@ -8,7 +8,7 @@ LF EQU 10
 .MODEL SMALL
 .STACK 200 ; Se define la pila
 .DATA ; Se definen datos
-       mensaje1 DB cr,lf,'Calculadora de Figuras$'
+       mensaje1 DB cr,lf,'GeometryTEC$'
        mensajeF DB CR, LF, 'Que figura te gustaria seleccionar?', CR, LF, LF
         DB '1. Trapecio', CR, LF
         DB '2. Triangulo', CR, LF
@@ -20,82 +20,83 @@ LF EQU 10
         DB '8. Paralelogramo', CR, LF
         DB '9. Hexagono', '$'
 
-       mensajeT DB cr,lf,'Este es el trapecio, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
-       mensajeC DB cr,lf,'Presione 1 para Area y 2 para perimetro?$'
-       mensaje2 DB cr,lf,'Ingresa la base menor: (presiona enter)$'
-       mensaje3 DB cr,lf,'Ingresa la base mayor: (presiona enter)$'
-       mensaje4 DB cr,lf,'Presiona cualquier tecla para continuar$'
-       mensaje5 DB cr,lf,'Presiona 1 si estas activo y 0 para salir.$'
-       mensaje6 DB cr,lf,'Ingresa la altura: (presiona enter)$'
-       mensaje10 DB cr,lf,'El area del trapecio es:$' 
-       mensajePT DB  cr,lf, 'El perimetro del trapecio es: $'
-       mensajeBMT DB cr,lf,'Ingrese el valor de la base menor del Trapecio:  $'
-       mensajeBMAT DB cr,lf,'Ingrese el valor de la base mayor del Trapecio: $' 
-       mensajeDT DB cr,lf,'Ingrese el valor de la diagonal del Trapecio$'
-       mensajeRPT DB cr,lf,'El perimetro del trapecio es de: $'
-       salir DB cr,lf,'Saliendo del programa presione cualquier tecla..$'
-       
-       
+        mensajeT DB cr,lf,'Este es el trapecio, presione 1 para pasar a los calculos y 0 para volver al INICIO.$'
+        mensajeC DB cr,lf,'Presione 1 para calcular el area y 2 para calcular el perimetro.$'
+        mensaje2 DB cr,lf,'Ingrese la base menor del trapecio y presione ENTER: $'
+        mensaje3 DB cr,lf,'Ingrese la base mayor del trapecio y presione ENTER: $'
+        mensaje4 DB cr,lf,'Presione cualquier tecla para continuar.$'
+        mensaje5 DB cr,lf,'Presione 1 si esta activo y 0 para salir.$'
+        mensaje6 DB cr,lf,'Ingrese la altura del trapecio y presione ENTER: $'
+        mensaje10 DB cr,lf,'El area del trapecio es: $' 
+        mensajePT DB cr,lf,'El perimetro del trapecio es: $'
+        mensajeBMT DB cr,lf,'Ingrese la base menor del trapecio y presione ENTER: $'
+        mensajeBMAT DB cr,lf,'Ingrese la base mayor del trapecio y presione ENTER: $'
+        mensajeDT DB cr,lf,'Ingrese la diagonal del trapecio y presione ENTER: $'
+        mensajeRPT DB cr,lf,'El perimetro del trapecio es: $'
+        salir DB cr,lf,'Saliendo del programa. Presione cualquier tecla...$'
         
-       
-       ;Mensajes de Triangulo
-       mensaje12 DB cr,lf,'El area del triangulo es:$'
-       mensajeCt DB cr,lf,'Presione 1 para Area y 2 para perimetro?$'
-       mensajeTri DB cr,lf,'Este es el triangulo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
-       mensaje6Tri DB cr,lf,'Ingresa la altura: (presiona enter)$'
-       mensaje2Tri DB cr,lf,'Ingresa el lado del triangulo: (presiona enter)$'
-       mensaje123 DB cr,lf,'El perimetro del triangulo es:$'
-       
-       
-       ;Mensajes del Cuadrado
-       mensajeCU DB cr,lf,'Este es el cuadrado, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
-       mensajeCA DB cr,lf,'Area del cuadrado:$' 
-       mensajeAC DB cr,lf,'El area del cuadrado es:$'
-       mensajeCPE DB cr,lf,'Perimetro del cuadrado:$'
-       mensajePC DB cr,lf,'El perimetro del cuadrado es:$'   
-       
-       ;Mensajes del Rectangulo
-       mensajeR DB cr, lf, 'Este es el rectangulo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
-       mensajeRA DB cr,lf,'Area del rectangulo:$' 
-       mensajeAR DB cr,lf,'El area del rectangulo es:$'
-       mensajeRP DB cr,lf,'Perimetro del rectangulo:$'
-       mensajePR DB cr,lf,'El perimetro del rectangulo es:$'  
-       mensajeLR DB cr,lf,'Ingresa el largo del rectangulo: (presiona enter)$'
-       mensajeANR DB cr,lf,'Ingresa el ancho del rectangulo: (presiona enter)$'
-       
-       ;Mensajes del Circulo
-       mensajeCirculo DB CR, LF, 'Este es el circulo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
-       mensajeAreaCirculo DB CR, LF, 'Área del circulo:$' 
-       mensajeACirculo DB CR, LF, 'El area del circulo es:$'
-       mensajePeriCirculo DB CR, LF, 'Perimetro del circulo:$'
-       mensajePCirculo DB CR, LF, 'El perimetro del circulo es:$' 
-       mensajeRadio DB CR, LF, 'Ingrese el radio del circulo:$'
-       
-       ; Datos del rombo
-       mensajeRombo DB CR, LF, 'Este es el rombo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
-       mensajeDiag1 DB CR, LF, 'Ingrese la longitud de la diagonal 1: (presione enter)$'
-       mensajeDiag2 DB CR, LF, 'Ingrese la longitud de la diagonal 2: (presione enter)$'
-       mensajeAreaRombo DB CR, LF, 'El area del rombo es: $'
-       mensajePeriRombo DB CR, LF, 'El perimetro del rombo es: $'   
-       
-       ; Datos del Pentagono
-       mensajePentagono DB CR, LF, 'Este es el pentagono, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
-       mensajeLadoP DB CR, LF, 'Ingrese la longitud del lado del pentagono: (presione enter)$'
-       mensajeAreaP DB CR, LF, 'El area del pentagono es: $'
-       mensajePeriP DB CR, LF, 'El perimetro del pentagono es: $'   
-       
-       ; Datos del Paralelogramo
-       mensajeParalelogramo DB CR, LF, 'Este es el paralelogramo, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
-       mensajeBase DB CR, LF, 'Ingrese la longitud de la base del paralelogramo: (presione enter)$'
-       mensajeAltura DB CR, LF, 'Ingrese la altura del paralelogramo: (presione enter)$'
-       mensajeAreaPar DB CR, LF, 'El area del paralelogramo es: $'
-       mensajePeriPar DB CR, LF, 'El perimetro del paralelogramo es: $'
-       
-       ; Datos del Hexagono
-       mensajeHexagono DB CR, LF, 'Este es el hexagono, presione 1 para pasar a los calculos y 0 para volver al INICIO$'
-       mensajeLadoH DB CR, LF, 'Ingrese la longitud del lado del hexagono: (presione enter)$'
-       mensajeAreaH DB CR, LF, 'El area del hexagono es: $'
-       mensajePeriH DB CR, LF, 'El perimetro del hexagono es: $'
+        ;Mensajes de Triangulo
+        mensaje12 DB cr,lf,'El area del triangulo es: $'
+        mensajeCt DB cr,lf,'Presione 1 para calcular el area y 2 para calcular el perimetro.$'
+        mensajeTri DB cr,lf,'Este es el triangulo, presione 1 para pasar a los calculos y 0 para volver al INICIO.$'
+        mensaje6Tri DB cr,lf,'Ingrese la altura del triangulo y presione ENTER: $'
+        mensaje2Tri DB cr,lf,'Ingrese el lado del triangulo y presione ENTER: $'
+        mensajeBTR DB cr,lf,'Ingrese la base del triangulo y presione ENTER: $'
+        mensaje123 DB cr,lf,'El perimetro del triangulo es: $'
+        
+        ;Mensajes del Cuadrado
+        mensajeCU DB cr,lf,'Este es el cuadrado, presione 1 para pasar a los calculos y 0 para volver al INICIO.$'
+        mensajeCA DB cr,lf,'El area del cuadrado es: $' 
+        mensajeAC DB cr,lf,'El area del cuadrado es: $'
+        mensajeCPE DB cr,lf,'El perimetro del cuadrado es: $'
+        mensajePC DB cr,lf,'El perimetro del cuadrado es: $'
+        mensajeLC DB cr,lf,'Ingrese el lado del cuadrado y presione ENTER: $'   
+        
+        ;Mensajes del Rectangulo
+        mensajeR DB cr,lf,'Este es el rectangulo, presione 1 para pasar a los calculos y 0 para volver al INICIO.$'
+        mensajeRA DB cr,lf,'El area del rectangulo es: $' 
+        mensajeAR DB cr,lf,'El area del rectangulo es: $'
+        mensajeRP DB cr,lf,'El perimetro del rectangulo es: $'
+        mensajePR DB cr,lf,'El perimetro del rectangulo es: $'  
+        mensajeLR DB cr,lf,'Ingrese el largo del rectangulo y presione ENTER: $'
+        mensajeANR DB cr,lf,'Ingrese el ancho del rectangulo y presione ENTER: $'
+        
+        ;Mensajes del Circulo
+        mensajeCirculo DB cr,lf,'Este es el circulo, presione 1 para pasar a los calculos y 0 para volver al INICIO.$'
+        mensajeAreaCirculo DB cr,lf,'El area del circulo es: $' 
+        mensajeACirculo DB cr,lf,'El area del circulo es: $'
+        mensajePeriCirculo DB cr,lf,'El perimetro del circulo es: $'
+        mensajePCirculo DB cr,lf,'El perimetro del circulo es: $' 
+        mensajeRadio DB cr,lf,'Ingrese el radio del circulo y presione ENTER: $'
+        
+        ;Mensajes del Rombo
+        mensajeRombo DB cr,lf,'Este es el rombo, presione 1 para pasar a los calculos y 0 para volver al INICIO.$'
+        mensajeDiag1 DB cr,lf,'Ingrese la longitud de la diagonal 1 del rombo y presione ENTER: $'
+        mensajeDiag2 DB cr,lf,'Ingrese la longitud de la diagonal 2 del rombo y presione ENTER: $'
+        mensajeAreaRombo DB cr,lf,'El area del rombo es: $'
+        mensajePeriRombo DB cr,lf,'El perimetro del rombo es: $'   
+        
+        ;Mensajes del Pentagono
+        mensajePentagono DB cr,lf,'Este es el pentagono, presione 1 para pasar a los calculos y 0 para volver al INICIO.$'
+        mensajeLadoP DB cr,lf,'Ingrese la longitud del lado del pentagono y presione ENTER: $'
+        mensajeAreaP DB cr,lf,'El area del pentagono es: $'
+        mensajePeriP DB cr,lf,'El perimetro del pentagono es: $'   
+        mensajeApotPen DB cr,lf,'Ingrese la longitud del apotema del pentagono y presione ENTER: $'
+        
+        ;Mensajes del Paralelogramo
+        mensajeParalelogramo DB cr,lf,'Este es el paralelogramo, presione 1 para pasar a los calculos y 0 para volver al INICIO.$'
+        mensajeBase DB cr,lf,'Ingrese la longitud de la base del paralelogramo y presione ENTER: $'
+        mensajeAltura DB cr,lf,'Ingrese la altura del paralelogramo y presione ENTER: $'
+        mensajeAreaPar DB cr,lf,'El area del paralelogramo es: $'
+        mensajePeriPar DB cr,lf,'El perimetro del paralelogramo es: $'
+        
+        ;Mensajes del Hexagono
+        mensajeHexagono DB cr,lf,'Este es el hexagono, presione 1 para pasar a los calculos y 0 para volver al INICIO.$'
+        mensajeLadoH DB cr,lf,'Ingrese la longitud del lado del hexagono y presione ENTER: $'
+        mensajeAreaH DB cr,lf,'El area del hexagono es: $'
+        mensajePeriH DB cr,lf,'El perimetro del hexagono es: $'
+        mensajeApotH DB cr,lf,'Ingrese la longitud del apotema del hexagono y presione ENTER: $'
+        
 
        
        i1 DW ?
@@ -380,6 +381,18 @@ PRINT_FLOAT_NUM:
     MOV AX, tf3
     CALL PRINT_NUM_UNS
     RET
+    
+; Ciclo para calcular los datos de una nueva figura o salir
+END_FIGURE:
+    LEA DX,mensaje4
+    CALL PRINTLN
+    
+    MOV AH,07H
+    INT 21H  
+    
+    CALL NEW_SCREEN
+
+    JMP inicio
 
 ; Funcion para imprimir el contenido de DX y un espacio
 PRINTLN:
@@ -486,12 +499,8 @@ seleccion_figura:
 
 ;TRAPECIO 
 trapecio:
-    MOV AH, 09H
     LEA DX, mensajeT    
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H
+    CALL PRINTLN
     
     MOV AH,01H
     INT 21H
@@ -503,12 +512,8 @@ trapecio:
     JMP INICIO
     
 seleccion_calculoT:
-    MOV AH, 09H
     LEA DX,mensajeC
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H
+    CALL PRINTLN
     
     MOV AH,01H
     INT 21H
@@ -525,23 +530,16 @@ seleccion_calculoT:
     
 
 multiplica:
-   CALL NEW_SCREEN
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
+   CALL NEW_SCREEN 
                         
-    LEA DX,mensajeLR
+    LEA DX,mensaje2
     CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX  
     
     
-    LEA DX,mensajeANR
+    LEA DX,mensaje3
     CALL PRINT    
     CALL SCAN_NUM     
     MOV ti2, CX
@@ -553,7 +551,7 @@ multiplica:
     MOV tf1, DX
  
     
-    LEA DX,mensajeANR
+    LEA DX,mensaje6
     CALL PRINT    
     CALL SCAN_NUM     
     MOV ti2, CX
@@ -569,35 +567,21 @@ multiplica:
     
 
     
-    LEA DX, mensajeAC
+    LEA DX, mensaje10
     CALL PRINT  
       
-    
-   
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    JMP inicio 
+    
+    JMP END_FIGURE
     
 
 
 PerimetroT:
 
-   CALL NEW_SCREEN
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
+    CALL NEW_SCREEN
     
-    LEA DX, espa
-    INT 21H  
-                        
-    LEA DX,mensajeLR
+    LEA DX,mensajeDT
     CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
@@ -611,7 +595,7 @@ PerimetroT:
     MOV tf1, DX  
     
     
-    LEA DX,mensajeANR
+    LEA DX,mensaje2
     CALL PRINT    
     CALL SCAN_NUM     
     MOV ti2, CX
@@ -622,7 +606,7 @@ PerimetroT:
     MOV ti1, CX
     MOV tf1, DX   
     
-    LEA DX,mensajeANR
+    LEA DX,mensaje3
     CALL PRINT    
     CALL SCAN_NUM     
     MOV ti2, CX
@@ -631,22 +615,14 @@ PerimetroT:
     
 
     
-    LEA DX, mensajeAC
+    LEA DX, mensajePT
     CALL PRINT  
       
     
    
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio 
+    JMP END_FIGURE 
 
 
     
@@ -689,23 +665,16 @@ seleccion_calculoTri:
     JMP INICIO
          
 multiplica_tri:
-   CALL NEW_SCREEN
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
+    CALL NEW_SCREEN
                         
-    LEA DX,mensajeLR
+    LEA DX,mensajeBTR
     CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX  
     
     
-    LEA DX,mensajeANR
+    LEA DX,mensaje6Tri
     CALL PRINT    
     CALL SCAN_NUM     
     MOV ti2, CX
@@ -720,35 +689,20 @@ multiplica_tri:
     CALL FLOAT_DIV_2    
     
     
-    LEA DX, mensajeAC
+    LEA DX, mensaje12
     CALL PRINT  
       
-    
-   
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    JMP inicio 
+    JMP END_FIGURE
+    
+     
     
 perimetro_Tri:
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-
-    MOV AH, 09H
-    LEA DX, mensajeCPE
-    INT 21H
+    CALL NEW_SCREEN
     
-    LEA DX, espa
-    INT 21H
-    
-    LEA DX,mensaje2
-    INT 21H
+    LEA DX,mensaje2Tri
+    CALL PRINTLN
     
     CALL SCAN_NUM
     MOV ti1, CX
@@ -758,7 +712,7 @@ perimetro_Tri:
     
      
    
-    LEA DX, mensajePC
+    LEA DX, mensaje123
     CALL PRINT
   
     
@@ -767,19 +721,8 @@ perimetro_Tri:
     
     CALL PRINT_FLOAT_NUM
 
-    LEA DX,espa
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP INICIO       ; Regresar al INICIO
+    JMP END_FIGURE
     
-    
-
-
 ;CUADRADO
 
 cuadrado:
@@ -821,19 +764,10 @@ seleccion_calculoC:
     
     
 multiplica_Cua:
-     MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-
-    MOV AH, 09H
-    LEA DX, mensajeCA
-    INT 21H
+    CALL NEW_SCREEN                      
     
-    LEA DX, espa
-    INT 21H                      
-    
-    LEA DX,mensaje2
-    INT 21H
+    LEA DX,mensajeLC
+    CALL PRINTLN
     
     CALL SCAN_NUM
     MOV ti1, CX
@@ -849,30 +783,13 @@ multiplica_Cua:
    
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio  
+    JMP END_FIGURE  
     
 perimetro_Cua:
-     MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
+    CALL NEW_SCREEN
 
-    MOV AH, 09H
-    LEA DX, mensajeCPE
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H
-    
-    LEA DX,mensaje2
-    INT 21H
+    LEA DX, mensajeLC
+    CALL PRINT
     
     CALL SCAN_NUM
     MOV ti1, CX
@@ -880,8 +797,6 @@ perimetro_Cua:
     MOV ti2,4
     MOV tf2,0 
     
-     
-   
     LEA DX, mensajePC
     CALL PRINT
   
@@ -892,15 +807,7 @@ perimetro_Cua:
     CALL PRINT_FLOAT_NUM
     
     
-    LEA DX,espa
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio
+    JMP END_FIGURE
     
 Rectangulo:
     MOV AH, 09H
@@ -939,71 +846,42 @@ seleccion_calculoR:
     JMP INICIO
   
 multiplica_Rec:
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
-    
-    MOV AH, 09H                    
+    CALL NEW_SCREEN
+                 
     LEA DX,mensajeLR
-    INT 21H    
+    CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX 
                                                                                  
-
-    MOV AH, 09H
     LEA DX,mensajeANR
-    INT 21H    
+    CALL PRINT    
     CALL SCAN_NUM 
     MOV ti2, CX
     MOV tf2, DX
     CALL FLOAT_MUL 
     
-    
-    
-    LEA DX, mensajeAC
+    LEA DX, mensajeRA
     CALL PRINT  
       
-    
-   
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio
+    JMP END_FIGURE
     
 perimetro_Rec:
-   CALL NEW_SCREEN
+    CALL NEW_SCREEN
 
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
-                        
     LEA DX,mensajeLR
-    CALL PRINT    
+    CALL PRINT
+      
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX
     
     
     LEA DX,mensajeANR
-    CALL PRINT    
+    CALL PRINT
+        
     CALL SCAN_NUM 
     MOV ti2, CX
     MOV tf2, DX 
@@ -1016,26 +894,12 @@ perimetro_Rec:
     MOV tf2, 0 
     CALL FLOAT_MUL
     
-
-    
-    
-    
-    LEA DX, mensajeAC
+    LEA DX, mensajeRP
     CALL PRINT  
       
-    
-   
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio     
+    JMP END_FIGURE     
 
 ; CIRCULO
 
@@ -1081,20 +945,11 @@ seleccion_calculoCirculo:
     JMP INICIO
 
 calcular_areaCirculo:
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
-    
-    MOV AH, 09H                    
-    LEA DX,mensajeLR
-    INT 21H    
+    CALL NEW_SCREEN  
+                        
+    LEA DX,mensajeRadio
+    CALL PRINT
+        
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX 
@@ -1113,37 +968,18 @@ calcular_areaCirculo:
     CALL FLOAT_MUL
     
 
-    LEA DX, mensajeAC
+    LEA DX, mensajeACirculo
     CALL PRINT  
       
-   
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio
+    JMP END_FIGURE
 
 calcular_perimetroCirculo:
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
-    
-    MOV AH, 09H                    
-    LEA DX,mensajeLR
-    INT 21H    
+    CALL NEW_SCREEN
+                        
+    LEA DX,mensajeRadio
+    CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX 
@@ -1162,21 +998,12 @@ calcular_perimetroCirculo:
     CALL FLOAT_MUL
     
 
-    LEA DX, mensajeAC
+    LEA DX, mensajePCirculo
     CALL PRINT  
-      
-   
+
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio
+    JMP END_FIGURE
 
 ; Codigo del rombo
 rombo:
@@ -1217,23 +1044,16 @@ seleccion_calculoRombo:
     JMP INICIO
 
 calcular_areaRombo:
-   CALL NEW_SCREEN
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
+    CALL NEW_SCREEN
                         
-    LEA DX,mensajeLR
+    LEA DX,mensajeDiag1
     CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX  
     
     
-    LEA DX,mensajeANR
+    LEA DX,mensajeDiag2
     CALL PRINT    
     CALL SCAN_NUM     
     MOV ti2, CX
@@ -1248,35 +1068,18 @@ calcular_areaRombo:
     CALL FLOAT_DIV_2    
     
     
-    LEA DX, mensajeAC
+    LEA DX, mensajeAreaRombo
     CALL PRINT  
-      
-    
-   
+
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    JMP inicio 
+    JMP END_FIGURE
 
 calcular_perimetroRombo:
-     MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-
-    MOV AH, 09H
-    LEA DX, mensajeCPE
-    INT 21H
+    CALL NEW_SCREEN
     
-    LEA DX, espa
-    INT 21H
-    
-    LEA DX,mensaje2
-    INT 21H
+    LEA DX,mensajeDiag1
+    CALL PRINT
     
     CALL SCAN_NUM
     MOV ti1, CX
@@ -1286,25 +1089,15 @@ calcular_perimetroRombo:
     
      
    
-    LEA DX, mensajePC
+    LEA DX, mensajePeriRombo
     CALL PRINT
   
-    
     CALL FLOAT_MUL
 
-    
     CALL PRINT_FLOAT_NUM
     
     
-    LEA DX,espa
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio
+    JMP END_FIGURE
 
 ; Codigo del Pentagono
 pentagono:
@@ -1345,16 +1138,9 @@ seleccion_calculoPentagono:
     JMP INICIO
 
 calcular_areaPentagono:
-   CALL NEW_SCREEN
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
+    CALL NEW_SCREEN  
                         
-    LEA DX,mensajeLR
+    LEA DX, mensajeLadoP
     CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
@@ -1368,7 +1154,7 @@ calcular_areaPentagono:
     MOV tf1, DX   
     
     
-    LEA DX,mensajeANR
+    LEA DX,mensajeApotPen
     CALL PRINT    
     CALL SCAN_NUM     
     MOV ti2, CX
@@ -1383,35 +1169,18 @@ calcular_areaPentagono:
     CALL FLOAT_DIV_2    
     
     
-    LEA DX, mensajeAC
+    LEA DX, mensajeAreaP
     CALL PRINT  
       
-    
-   
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    JMP inicio 
+    JMP END_FIGURE
 
 calcular_perimetroPentagono:
-     MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-
-    MOV AH, 09H
-    LEA DX, mensajeCPE
-    INT 21H
+    CALL NEW_SCREEN
     
-    LEA DX, espa
-    INT 21H
-    
-    LEA DX,mensaje2
-    INT 21H
+    LEA DX,mensajeLadoP
+    CALL PRINT
     
     CALL SCAN_NUM
     MOV ti1, CX
@@ -1421,25 +1190,14 @@ calcular_perimetroPentagono:
     
      
    
-    LEA DX, mensajePC
+    LEA DX, mensajePeriP
     CALL PRINT
-  
-    
+
     CALL FLOAT_MUL
 
-    
     CALL PRINT_FLOAT_NUM
     
-    
-    LEA DX,espa
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio   
+    JMP END_FIGURE   
     
 ; Codigo del Paralelogramo
 paralelogramo:
@@ -1480,28 +1238,17 @@ seleccion_calculoParalelogramo:
     JMP INICIO
 
 calcular_areaParalelogramo:
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
-    
-    MOV AH, 09H                    
-    LEA DX,mensajeLR
-    INT 21H    
+    CALL NEW_SCREEN
+                    
+    LEA DX,mensajeBase
+    CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX 
     CALL FLOAT_MUL
 
-    MOV AH, 09H
-    LEA DX,mensajeANR
-    INT 21H    
+    LEA DX, mensajeAltura
+    CALL PRINT    
     CALL SCAN_NUM 
     MOV ti2, CX
     MOV tf2, DX
@@ -1509,41 +1256,24 @@ calcular_areaParalelogramo:
     
     
     
-    LEA DX, mensajeAC
+    LEA DX, mensajeAreaPar
     CALL PRINT  
       
-    
-   
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio
+    JMP END_FIGURE
 
 calcular_perimetroParalelogramo:
-   CALL NEW_SCREEN
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
+    CALL NEW_SCREEN 
                         
-    LEA DX,mensajeLR
+    LEA DX,mensajeBase
     CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX
     
     
-    LEA DX,mensajeANR
+    LEA DX,mensajeAltura
     CALL PRINT    
     CALL SCAN_NUM 
     MOV ti2, CX
@@ -1557,26 +1287,11 @@ calcular_perimetroParalelogramo:
     MOV tf2, 0 
     CALL FLOAT_MUL
     
-
-    
-    
-    
-    LEA DX, mensajeAC
+    LEA DX, mensajePeriPar
     CALL PRINT  
-      
-    
-   
+
     CALL PRINT_FLOAT_NUM
-    
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio         
+    JMP END_FIGURE         
    
     ; Codigo del Hexagono
 hexagono:
@@ -1617,20 +1332,11 @@ seleccion_calculoHexagono:
     JMP INICIO
 
 calcular_areaHexagono:
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-
-    MOV AH, 09H
-    LEA DX, mensajeRA
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H  
-    
-    MOV AH, 09H                    
-    LEA DX,mensajeLR
-    INT 21H    
+    CALL NEW_SCREEN
+                      
+    LEA DX,mensajeLadoH
+    CALL PRINT
+        
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX                                                                            
@@ -1641,10 +1347,9 @@ calcular_areaHexagono:
     MOV DX, ti3  
     MOV ti1, CX
     MOV tf1, DX 
-    
-    MOV AH, 09H                    
-    LEA DX,mensajeLR
-    INT 21H    
+                        
+    LEA DX,mensajeApotH
+    CALL PRINT    
     CALL SCAN_NUM
     MOV ti2, CX
     MOV tf2, DX 
@@ -1652,46 +1357,27 @@ calcular_areaHexagono:
     CALL FLOAT_MUL
     
 
-    LEA DX, mensajeAC
+    LEA DX, mensajeAreaH
     CALL PRINT  
       
    
     CALL PRINT_FLOAT_NUM
     
-     LEA DX,espa            
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio
+    JMP END_FIGURE
 
 calcular_perimetroHexagono:
-     MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
+    CALL NEW_SCREEN
 
-    MOV AH, 09H
-    LEA DX, mensajeCPE
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H
-    
-    LEA DX,mensaje2
-    INT 21H
+    LEA DX,mensajeLadoH
+    CALL PRINT
     
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1,DX
     MOV ti2,6
     MOV tf2,0 
-    
-     
-   
-    LEA DX, mensajePC
+
+    LEA DX, mensajePeriH
     CALL PRINT
   
     
@@ -1701,15 +1387,7 @@ calcular_perimetroHexagono:
     CALL PRINT_FLOAT_NUM
     
     
-    LEA DX,espa
-    INT 21H
-
-    LEA DX,mensaje4
-    INT 21H
-
-    MOV AH,01H
-    INT 21H
-    JMP inicio
+    JMP END_FIGURE
 fin:
     MOV AH,09H
     LEA DX,salir
