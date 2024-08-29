@@ -689,53 +689,51 @@ seleccion_calculoTri:
     JMP INICIO
          
 multiplica_tri:
-    MOV AH,00H
-    MOV AL,03H
-    INT 10H
+   CALL NEW_SCREEN
 
-    MOV AH,09H
-    LEA DX,mensaje12
+    MOV AH, 09H
+    LEA DX, mensajeRA
+    INT 21H
+    
+    LEA DX, espa
     INT 21H  
-
-    LEA DX,espa
-    INT 21H
-
-    LEA DX,mensaje2Tri
-    INT 21H
-
+                        
+    LEA DX,mensajeLR
+    CALL PRINT    
     CALL SCAN_NUM
-    MOV i1,CX 
-
-    MOV AH,09H
-    LEA DX,mensaje6
-    INT 21H 
-
-    CALL SCAN_NUM
-    MOV i3,CX
-
-    MOV AH,09H
-    LEA DX,resultadoTri
-    INT 21H
-
-    MOV AX,i1        ; base
-    MOV BX,i3        ; altura
-    MUL BX           ; base * altura
-    MOV BX,c         ; 2
-    DIV BX           ; (base * altura) / 2
-
-
-    MOV CX,AX        ; Guardar el resultado en CX
-    CALL PRINT_NUM_UNS ; Imprimir el numero
-
-    LEA DX,espa
+    MOV ti1, CX
+    MOV tf1, DX  
+    
+    
+    LEA DX,mensajeANR
+    CALL PRINT    
+    CALL SCAN_NUM     
+    MOV ti2, CX
+    MOV tf2, DX 
+    CALL FLOAT_MUL
+    MOV CX, ti3
+    MOV DX ,tf3
+    MOV ti1, CX
+    MOV tf1, DX     
+    MOV ti2,2
+    MOV tf2, 0 
+    CALL FLOAT_DIV_2    
+    
+    
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+    
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
     LEA DX,mensaje4
     INT 21H
 
-    MOV AH,01H
-    INT 21H
-    JMP INICIO       ; Regresar al INICIO
+    JMP inicio 
     
 perimetro_Tri:
     MOV AH, 00H
@@ -1219,52 +1217,51 @@ seleccion_calculoRombo:
     JMP INICIO
 
 calcular_areaRombo:
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
+   CALL NEW_SCREEN
 
     MOV AH, 09H
-    LEA DX, mensajeDiag1
+    LEA DX, mensajeRA
     INT 21H
     
     LEA DX, espa
-    INT 21H
-    
+    INT 21H  
+                        
+    LEA DX,mensajeLR
+    CALL PRINT    
     CALL SCAN_NUM
-    MOV i1, CX      ; Diagonal 1
+    MOV ti1, CX
+    MOV tf1, DX  
     
-    MOV AH, 09H
-    LEA DX, mensajeDiag2
-    INT 21H
     
-    LEA DX, espa
-    INT 21H
+    LEA DX,mensajeANR
+    CALL PRINT    
+    CALL SCAN_NUM     
+    MOV ti2, CX
+    MOV tf2, DX 
+    CALL FLOAT_MUL
+    MOV CX, ti3
+    MOV DX ,tf3
+    MOV ti1, CX
+    MOV tf1, DX     
+    MOV ti2,2
+    MOV tf2, 0 
+    CALL FLOAT_DIV_2    
     
-    CALL SCAN_NUM
-    MOV i2, CX      ; Diagonal 2
-
-    ; Calculo del area: (Diagonal 1 * Diagonal 2) / 2
-    MOV AX, i1
-    MUL i2          ; Diagonal 1 * Diagonal 2
-    MOV BX, 2
-    DIV BX          ; (Diagonal 1 * Diagonal 2) / 2
-    MOV SI, AX      ; Guardar el area en SI
-
-    MOV AH, 09H
-    LEA DX, mensajeAreaRombo
-    INT 21H
-    MOV AX, SI
-    CALL PRINT_NUM_UNS 
     
-    LEA DX, espa
-    INT 21H
-
-    LEA DX, mensaje4
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+    
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
-    MOV AH, 01H
+    LEA DX,mensaje4
     INT 21H
-    JMP INICIO
+
+    JMP inicio 
 
 calcular_perimetroRombo:
      MOV AH, 00H
@@ -1348,42 +1345,58 @@ seleccion_calculoPentagono:
     JMP INICIO
 
 calcular_areaPentagono:
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
+   CALL NEW_SCREEN
 
     MOV AH, 09H
-    LEA DX, mensajeLadoP
+    LEA DX, mensajeRA
     INT 21H
     
     LEA DX, espa
-    INT 21H
-    
+    INT 21H  
+                        
+    LEA DX,mensajeLR
+    CALL PRINT    
     CALL SCAN_NUM
-    MOV i1, CX      ; Lado del pentagono
+    MOV ti1, CX
+    MOV tf1,DX
+    MOV ti2,5
+    MOV tf2,0
+    CALL FLOAT_MUL
+    MOV CX, ti3
+    MOV DX ,tf3
+    MOV ti1, CX
+    MOV tf1, DX   
     
-    ; Calculo del area: (sqrt(5 * (5 + 2 * sqrt(5))) / 4) * lado^2
-    MOV AX, i1
-    MUL AX          ; Lado^2
-    MOV BX, 172     ; Aproximacion de (sqrt(5 * (5 + 2 * sqrt(5))) / 4)
-    DIV BX          ; (lado^2 * 172) / 4
-    MOV SI, AX      ; Guardar el area en SI
-
-    MOV AH, 09H
-    LEA DX, mensajeAreaP
-    INT 21H
-    MOV AX, SI
-    CALL PRINT_NUM_UNS 
     
-    LEA DX, espa
+    LEA DX,mensajeANR
+    CALL PRINT    
+    CALL SCAN_NUM     
+    MOV ti2, CX
+    MOV tf2, DX 
+    CALL FLOAT_MUL
+    MOV CX, ti3
+    MOV DX ,tf3
+    MOV ti1, CX
+    MOV tf1, DX     
+    MOV ti2,2
+    MOV tf2, 0 
+    CALL FLOAT_DIV_2    
+    
+    
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+    
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
-    LEA DX, mensaje4
+    LEA DX,mensaje4
     INT 21H
 
-    MOV AH, 01H
-    INT 21H
-    JMP INICIO
+    JMP inicio 
 
 calcular_perimetroPentagono:
      MOV AH, 00H
@@ -1404,7 +1417,7 @@ calcular_perimetroPentagono:
     MOV ti1, CX
     MOV tf1,DX
     MOV ti2,5
-    MOV tf2,0 
+    MOV tf2,0
     
      
    
@@ -1609,37 +1622,51 @@ calcular_areaHexagono:
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensajeLadoH
+    LEA DX, mensajeRA
     INT 21H
     
     LEA DX, espa
-    INT 21H
+    INT 21H  
     
+    MOV AH, 09H                    
+    LEA DX,mensajeLR
+    INT 21H    
     CALL SCAN_NUM
-    MOV i1, CX      ; Lado del hexagono
+    MOV ti1, CX
+    MOV tf1, DX                                                                            
+    MOV ti2, 3
+    MOV tf2, 0
+    CALL FLOAT_MUL
+    MOV CX, ti3  
+    MOV DX, ti3  
+    MOV ti1, CX
+    MOV tf1, DX 
     
-    ; Calculo del area: ((3 * sqrt(3)) / 2) * lado^2
-    MOV AX, i1
-    MUL AX          ; Lado^2
-    MOV BX, 155     ; Aproximacion de ((3 * sqrt(3)) / 2)
-    DIV BX          ; (lado^2 * 155) / 2
-    MOV SI, AX      ; Guardar el area en SI
-
-    MOV AH, 09H
-    LEA DX, mensajeAreaH
-    INT 21H
-    MOV AX, SI
-    CALL PRINT_NUM_UNS 
+    MOV AH, 09H                    
+    LEA DX,mensajeLR
+    INT 21H    
+    CALL SCAN_NUM
+    MOV ti2, CX
+    MOV tf2, DX 
+                                                                                  
+    CALL FLOAT_MUL
     
-    LEA DX, espa
+
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
-    LEA DX, mensaje4
+    LEA DX,mensaje4
     INT 21H
 
-    MOV AH, 01H
+    MOV AH,01H
     INT 21H
-    JMP INICIO
+    JMP inicio
 
 calcular_perimetroHexagono:
      MOV AH, 00H
