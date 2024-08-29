@@ -244,17 +244,51 @@ FLOAT_ADD:
     CMP tf3, 100; Verificar si hay acarreo
     JGE INC_INT; Agregar acarreo a la parte entera
     
-INC_INT:
-    INC ti3
-    SUB tf3, 100
-    JMP CARRY_ADDED
-    
 CARRY_ADDED:
     MOV ti1, 0
     MOV ti2, 0
     MOV tf1, 0
     MOV tf2, 0
     RET
+    
+INC_INT:
+    INC ti3
+    SUB tf3, 100
+    JMP CARRY_ADDED  
+    
+FLOAT_DIV:
+    ; ti1 x ti2
+    MOV ti3, 0
+    MOV tf3, 0
+    MOV AX, ti1
+    DIV ti2
+    MOV ti3, AX
+    
+    ; ti2 x tf1
+    MOV AX, ti2
+    MUL tf1
+    MOV BX, 100
+    DIV BX
+    ADD ti3, AX
+    ADD tf3, DX
+    
+    ; ti1 x tf2
+    MOV AX, ti1
+    MUL tf2
+    MOV BX, 100
+    DIV BX
+    ADD ti3, AX
+    ADD tf3, DX
+    
+    ; tf1 x tf2
+    MOV AX, tf1
+    MUL tf2
+    MOV BX, 10000
+    DIV BX
+    ADD tf3, AX
+    CMP tf3, 100
+    JGE ADD_MUL_CARRY ; Verificar si hay carry de la parte flotante
+    
 
 ; Multiplicacion de floats ti1 x ti2 + ti2 x tf1 / 100 + ti1 x tf2 / 100 + tf1 x tf2 / 10000    
 FLOAT_MUL:
@@ -290,7 +324,6 @@ FLOAT_MUL:
     CMP tf3, 100
     JGE ADD_MUL_CARRY ; Verificar si hay carry de la parte flotante
     
-    
 MUL_CARRY_ADDED:
     MOV CX, ti3
     MOV DX, tf3
@@ -299,7 +332,40 @@ MUL_CARRY_ADDED:
 ADD_MUL_CARRY:
     SUB tf3, 100
     INC ti3
-    JMP MUL_CARRY_ADDED 
+    JMP MUL_CARRY_ADDED  
+    
+FLOAT_DIV_2:
+    MOV ti3, 0
+    MOV tf3, 0
+    MOV AX,tf1
+    MUL ti2 
+    MOV BX, 4
+    DIV BX
+    ADD tf3,AX
+    MOV AX,ti1
+    MUL ti2 
+    MOV BX, 4
+    DIV BX
+    ADD ti3,AX
+    JMP FILL_INT_DIV
+
+FILL_INT_DIV:
+    CMP DX, 10
+    JLE FILL_FLOAT_DIV
+    JMP END_FLOAT_DIV
+    
+FILL_FLOAT_DIV:
+    MOV AX, DX
+    MOV BX,10
+    MUL BX
+    ADD tf3, AX
+    JMP END_FLOAT_DIV
+    
+END_FLOAT_DIV:
+    MOV CX, ti3
+    MOV DX, tf3
+    ret    
+    
     
     
     
@@ -459,83 +525,120 @@ seleccion_calculoT:
     
 
 multiplica:
-    MOV AH,00H
-    MOV AL,03H
-    INT 10H
+   CALL NEW_SCREEN
 
-    MOV AH,09H
-    LEA DX,mensaje10
-    INT 21H  
-
-    LEA DX,espa
+    MOV AH, 09H
+    LEA DX, mensajeRA
     INT 21H
-
-    LEA DX,mensaje2
-    INT 21H
-
-    CALL SCAN_NUM
-    MOV i1,CX
-    MOV f1, DX 
-
-    MOV AH,09H
-    LEA DX,mensaje3
-    INT 21H 
-
-    CALL SCAN_NUM
-    MOV i2,CX
-    MOV f2, DX
-    
-    
-    MOV AH,09H
-    LEA DX,mensaje6
-    INT 21H 
-
-    CALL SCAN_NUM
-    MOV i3,CX
-    MOV f3, DX
-
-    MOV AH,09H
-    LEA DX,resultado
-    INT 21H 
     
     LEA DX, espa
-    CALL PRINT
-
-    MOV AX,i1
-    MOV DX, f1        
-    MOV ti1, AX
-    MOV tf1, DX
-    
-    MOV AX,i2
-    MOV DX, f2        
-    MOV ti2, AX
-    MOV tf2, DX
+    INT 21H  
+                        
+    LEA DX,mensajeLR
+    CALL PRINT    
+    CALL SCAN_NUM
+    MOV ti1, CX
+    MOV tf1, DX  
     
     
-    
-    CALL FLOAT_ADD ; base menor + base mayor
-    
-    MOV AX, ti3       
-    MOV BX,c         ; 2
-    DIV BX           ; (base menor + base mayor) / 2
-    MOV ti1,AX
-    
-    MOV AX, tf3       
-    MOV BX,c         ; 2
-    DIV BX           ; (base menor + base mayor) / 2
-    MOV tf1,AX       ; altura
-    
-    MOV CX, i3
-    MOV DX, f3
-    
+    LEA DX,mensajeANR
+    CALL PRINT    
+    CALL SCAN_NUM     
     MOV ti2, CX
-    MOV tf2, DX
-     
-    CALL FLOAT_MUL         ; ((base menor + base mayor) / 2) * altura
+    MOV tf2, DX 
+    CALL FLOAT_ADD
+    MOV CX, ti3
+    MOV DX ,tf3
+    MOV ti1, CX
+    MOV tf1, DX
+ 
+    
+    LEA DX,mensajeANR
+    CALL PRINT    
+    CALL SCAN_NUM     
+    MOV ti2, CX
+    MOV tf2, DX 
+    CALL FLOAT_MUL
+    MOV CX, ti3
+    MOV DX ,tf3
+    MOV ti1, CX
+    MOV tf1, DX     
+    MOV ti2,2
+    MOV tf2, 0 
+    CALL FLOAT_DIV_2    
+    
 
-    CALL PRINT_FLOAT_NUM ; Imprimir el numero
+    
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+    
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
+    INT 21H
 
-    LEA DX,espa
+    LEA DX,mensaje4
+    INT 21H
+
+    JMP inicio 
+    
+
+
+PerimetroT:
+
+   CALL NEW_SCREEN
+
+    MOV AH, 09H
+    LEA DX, mensajeRA
+    INT 21H
+    
+    LEA DX, espa
+    INT 21H  
+                        
+    LEA DX,mensajeLR
+    CALL PRINT    
+    CALL SCAN_NUM
+    MOV ti1, CX
+    MOV tf1, DX 
+    MOV ti2, 2
+    MOV tf2, 0
+    CALL FLOAT_MUL
+    MOV CX,ti3
+    MOV DX,tf3
+    MOV ti1, CX
+    MOV tf1, DX  
+    
+    
+    LEA DX,mensajeANR
+    CALL PRINT    
+    CALL SCAN_NUM     
+    MOV ti2, CX
+    MOV tf2, DX 
+    CALL FLOAT_ADD
+    MOV CX,ti3
+    MOV DX,tf3
+    MOV ti1, CX
+    MOV tf1, DX   
+    
+    LEA DX,mensajeANR
+    CALL PRINT    
+    CALL SCAN_NUM     
+    MOV ti2, CX
+    MOV tf2, DX 
+    CALL FLOAT_ADD
+    
+
+    
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+    
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
     LEA DX,mensaje4
@@ -543,79 +646,7 @@ multiplica:
 
     MOV AH,01H
     INT 21H
-    JMP INICIO       ; Regresar al INICIO
-    
-
-
-PerimetroT:
-
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
-    
-    MOV AH, 09H
-    LEA DX, mensajePT
-    INT 21H
-    
-    LEA DX, espa
-    INT 21H
-        
-    LEA DX, mensajeBMT
-    INT 21H
-    
-    CALL SCAN_NUM
-    MOV i1, CX
-    
-    
-    LEA DX, espa
-    CALL PRINT  
-    
-    
-    LEA DX, mensajeDT
-    INT 21H
-    
-    CALL SCAN_NUM
-    MOV i2, CX   
-        
-    LEA DX, espa
-    CALL PRINT
-    
-    MOV AH, 09H
-    LEA DX, mensajeBMAT
-    INT 21H
-    
-    CALL SCAN_NUM
-    MOV i3, CX   
-    
-    LEA DX, espa
-    CALL PRINT
-    
-    MOV AH, 09H
-    LEA DX, mensajeRPT
-    INT 21H
-    
-    ; Multiplicar i2 por 2
-    MOV AX, i2
-    ADD AX, AX   ; AX = i2 * 2
-    
-    ; Sumar i1, i3 y el resultado de i2 * 2
-    ADD AX, i1   ; AX = i1 + (i2 * 2)
-    ADD AX, i3   ; AX = i1 + i3 + i2 * 2)
-            
-    ; Guardar el resultado final en CX
-    MOV CX, AX   ; CX = AX 
-    
-    CALL PRINT_NUM_UNS
-    
-    LEA DX, espa
-    INT 21H
-    
-    LEA DX, mensaje4
-    INT 21H
-    
-    MOV AH, 01H
-    INT 21H
-    JMP INICIO
+    JMP inicio 
 
 
     
@@ -927,7 +958,7 @@ multiplica_Rec:
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX 
-    
+                                                                                 
 
     MOV AH, 09H
     LEA DX,mensajeANR
@@ -957,9 +988,7 @@ multiplica_Rec:
     JMP inicio
     
 perimetro_Rec:
-       MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
+   CALL NEW_SCREEN
 
     MOV AH, 09H
     LEA DX, mensajeRA
@@ -967,26 +996,28 @@ perimetro_Rec:
     
     LEA DX, espa
     INT 21H  
-    
-    MOV AH, 09H                    
+                        
     LEA DX,mensajeLR
-    INT 21H    
+    CALL PRINT    
     CALL SCAN_NUM
     MOV ti1, CX
     MOV tf1, DX
     
     
-    
-    MOV AH, 09H
     LEA DX,mensajeANR
-    INT 21H    
+    CALL PRINT    
     CALL SCAN_NUM 
     MOV ti2, CX
     MOV tf2, DX 
     CALL FLOAT_ADD
+    MOV CX,ti3
+    MOV DX,tf3 
     MOV ti1, CX
-    MOV tf1, DX
+    MOV tf1, DX 
+    MOV ti2, 2
+    MOV tf2, 0 
     CALL FLOAT_MUL
+    
 
     
     
@@ -1057,40 +1088,48 @@ calcular_areaCirculo:
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensajeAreaCirculo
+    LEA DX, mensajeRA
     INT 21H
     
     LEA DX, espa
-    INT 21H                      
+    INT 21H  
     
-    LEA DX, mensajeRadio
-    INT 21H
-    
+    MOV AH, 09H                    
+    LEA DX,mensajeLR
+    INT 21H    
     CALL SCAN_NUM
-    MOV i1, CX      ; radio del circulo
-
-    ; Calcular el Area del circulo: PI * radio * radio
-    MOV AX, i1      ; radio
-    MUL AX          ; radio * radio
-    MOV BX, 3
-    MUL BX     ; 3 * (radio * radio)
-    MOV SI, AX      ; Guardar el area en SI
-
-    MOV AH, 09H
-    LEA DX, mensajeACirculo
-    INT 21H
-    MOV AX, SI
-    CALL PRINT_NUM_UNS 
+    MOV ti1, CX
+    MOV tf1, DX 
+    MOV ti2, CX
+    MOV tf2, DX
+                                                                                 
+    CALL FLOAT_MUL
+    MOV CX, ti3  
+    MOV DX, ti3 
     
-    LEA DX, espa
+    MOV ti1, CX
+    MOV tf1, DX 
+                                                                     
+    MOV ti2, 3
+    MOV tf2, 14  
+    CALL FLOAT_MUL
+    
+
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
-    LEA DX, mensaje4
+    LEA DX,mensaje4
     INT 21H
 
-    MOV AH, 01H
+    MOV AH,01H
     INT 21H
-    JMP INICIO 
+    JMP inicio
 
 calcular_perimetroCirculo:
     MOV AH, 00H
@@ -1098,41 +1137,48 @@ calcular_perimetroCirculo:
     INT 10H
 
     MOV AH, 09H
-    LEA DX, mensajePeriCirculo
+    LEA DX, mensajeRA
     INT 21H
     
     LEA DX, espa
-    INT 21H
+    INT 21H  
     
-    LEA DX, mensajeRadio
-    INT 21H
-    
+    MOV AH, 09H                    
+    LEA DX,mensajeLR
+    INT 21H    
     CALL SCAN_NUM
-    MOV i1, CX      ; radio del circulo
+    MOV ti1, CX
+    MOV tf1, DX 
+                                                                                 
+    MOV ti2, 3
+    MOV tf2, 14
+    CALL FLOAT_MUL
+    MOV CX, ti3  
+    MOV DX, ti3 
     
-    ; Calcular el perimetro del circulo: 2 * PI * radio
-    MOV AX, i1      ; radio
-    MOV BX, 2
-    MUL BX     ; 2 * radio
-    MOV BX, 3
-    MUL BX     ; 3 * (2 * radio)
-    MOV DI, AX      ; Guardar el perimetro en DI
-
-    MOV AH, 09H
-    LEA DX, mensajePCirculo
-    INT 21H
-    MOV AX, DI
-    CALL PRINT_NUM_UNS
+    MOV ti1, CX
+    MOV tf1, DX 
+                                                                                 
+    MOV ti2, 2
+    MOV tf2, 0  
+    CALL FLOAT_MUL
     
-    LEA DX, espa
+
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
-    LEA DX, mensaje4
+    LEA DX,mensaje4
     INT 21H
 
-    MOV AH, 01H
+    MOV AH,01H
     INT 21H
-    JMP INICIO
+    JMP inicio
 
 ; Codigo del rombo
 rombo:
@@ -1468,52 +1514,56 @@ calcular_areaParalelogramo:
     JMP inicio
 
 calcular_perimetroParalelogramo:
-    MOV AH, 00H
-    MOV AL, 03H
-    INT 10H
+   CALL NEW_SCREEN
 
     MOV AH, 09H
-    LEA DX, mensajeBase
+    LEA DX, mensajeRA
     INT 21H
     
     LEA DX, espa
-    INT 21H
-    
+    INT 21H  
+                        
+    LEA DX,mensajeLR
+    CALL PRINT    
     CALL SCAN_NUM
-    MOV i1, CX      ; Base del paralelogramo
+    MOV ti1, CX
+    MOV tf1, DX
     
-    MOV AH, 09H
-    LEA DX, mensajeAltura
-    INT 21H
     
-    LEA DX, espa
-    INT 21H
+    LEA DX,mensajeANR
+    CALL PRINT    
+    CALL SCAN_NUM 
+    MOV ti2, CX
+    MOV tf2, DX 
+    CALL FLOAT_ADD
+    MOV CX,ti3
+    MOV DX,tf3 
+    MOV ti1, CX
+    MOV tf1, DX 
+    MOV ti2, 2
+    MOV tf2, 0 
+    CALL FLOAT_MUL
     
-    CALL SCAN_NUM
-    MOV i2, CX      ; Altura del paralelogramo
 
-    ; Calculo del perimetro: 2 * (base + altura)
-    MOV AX, i1
-    ADD AX, i2      ; base + altura
-    MOV BX, 2
-    MUL BX          ; 2 * (base + altura)
-    MOV DI, AX      ; Guardar el perimetro en DI
-
-    MOV AH, 09H
-    LEA DX, mensajePeriPar
-    INT 21H
-    MOV AX, DI
-    CALL PRINT_NUM_UNS
     
-    LEA DX, espa
+    
+    
+    LEA DX, mensajeAC
+    CALL PRINT  
+      
+    
+   
+    CALL PRINT_FLOAT_NUM
+    
+     LEA DX,espa            
     INT 21H
 
-    LEA DX, mensaje4
+    LEA DX,mensaje4
     INT 21H
 
-    MOV AH, 01H
+    MOV AH,01H
     INT 21H
-    JMP INICIO         
+    JMP inicio         
    
     ; Codigo del Hexagono
 hexagono:
